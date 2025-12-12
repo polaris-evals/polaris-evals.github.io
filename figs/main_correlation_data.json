@@ -1,0 +1,511 @@
+{
+  "metrics": {
+    "polaris": {
+      "pearson_r": 0.7456412624204365,
+      "mmrv": 0.02987179487179488
+    },
+    "libero": {
+      "pearson_r": 0.6771534136930346,
+      "mmrv": 0.03917735042735043
+    }
+  },
+  "polaris_points": [
+    {
+      "policy": "paligemma_binning_droid_jointpos",
+      "environment": "Block Stacking (UW)",
+      "sim": 0.0163265306122449,
+      "real": 0.3666666666666667,
+      "color": "#5b21b6",
+      "marker": "o"
+    },
+    {
+      "policy": "paligemma_binning_droid_jointpos",
+      "environment": "Food Bussing (UW)",
+      "sim": 0.025,
+      "real": 0.3,
+      "color": "#7c3aed",
+      "marker": "o"
+    },
+    {
+      "policy": "paligemma_binning_droid_jointpos",
+      "environment": "Move Latte Cup (Princeton)",
+      "sim": 0.0,
+      "real": 0.13333333333333333,
+      "color": "#a855f7",
+      "marker": "o"
+    },
+    {
+      "policy": "paligemma_binning_droid_jointpos",
+      "environment": "Organize Tools (Princeton)",
+      "sim": 0.0,
+      "real": 0.4666666666666666,
+      "color": "#c084fc",
+      "marker": "o"
+    },
+    {
+      "policy": "paligemma_binning_droid_jointpos",
+      "environment": "Pan Cleaning (UW)",
+      "sim": 0.115,
+      "real": 0.025,
+      "color": "#9333ea",
+      "marker": "o"
+    },
+    {
+      "policy": "paligemma_binning_droid_jointpos",
+      "environment": "Tape Into Container (Princeton)",
+      "sim": 0.0,
+      "real": 0.15,
+      "color": "#d8b4fe",
+      "marker": "o"
+    },
+    {
+      "policy": "pi05_droid_jointpos",
+      "environment": "Block Stacking (UW)",
+      "sim": 0.544,
+      "real": 0.8333333333333334,
+      "color": "#5b21b6",
+      "marker": "s"
+    },
+    {
+      "policy": "pi05_droid_jointpos",
+      "environment": "Food Bussing (UW)",
+      "sim": 0.58,
+      "real": 0.7,
+      "color": "#7c3aed",
+      "marker": "s"
+    },
+    {
+      "policy": "pi05_droid_jointpos",
+      "environment": "Move Latte Cup (Princeton)",
+      "sim": 0.33333333333000004,
+      "real": 0.85,
+      "color": "#a855f7",
+      "marker": "s"
+    },
+    {
+      "policy": "pi05_droid_jointpos",
+      "environment": "Organize Tools (Princeton)",
+      "sim": 0.59999999998,
+      "real": 0.85,
+      "color": "#c084fc",
+      "marker": "s"
+    },
+    {
+      "policy": "pi05_droid_jointpos",
+      "environment": "Pan Cleaning (UW)",
+      "sim": 0.55,
+      "real": 0.7,
+      "color": "#9333ea",
+      "marker": "s"
+    },
+    {
+      "policy": "pi05_droid_jointpos",
+      "environment": "Tape Into Container (Princeton)",
+      "sim": 0.80000000001,
+      "real": 0.75,
+      "color": "#d8b4fe",
+      "marker": "s"
+    },
+    {
+      "policy": "pi0_droid_jointpos",
+      "environment": "Block Stacking (UW)",
+      "sim": 0.23600000000000002,
+      "real": 0.35000000000000003,
+      "color": "#5b21b6",
+      "marker": "^"
+    },
+    {
+      "policy": "pi0_droid_jointpos",
+      "environment": "Food Bussing (UW)",
+      "sim": 0.365,
+      "real": 0.35,
+      "color": "#7c3aed",
+      "marker": "^"
+    },
+    {
+      "policy": "pi0_droid_jointpos",
+      "environment": "Move Latte Cup (Princeton)",
+      "sim": 0.13333333332,
+      "real": 0.3833333333333333,
+      "color": "#a855f7",
+      "marker": "^"
+    },
+    {
+      "policy": "pi0_droid_jointpos",
+      "environment": "Organize Tools (Princeton)",
+      "sim": 0.19999999998,
+      "real": 0.4833333333333333,
+      "color": "#c084fc",
+      "marker": "^"
+    },
+    {
+      "policy": "pi0_droid_jointpos",
+      "environment": "Pan Cleaning (UW)",
+      "sim": 0.335,
+      "real": 0.35,
+      "color": "#9333ea",
+      "marker": "^"
+    },
+    {
+      "policy": "pi0_droid_jointpos",
+      "environment": "Tape Into Container (Princeton)",
+      "sim": 0.46666666666999995,
+      "real": 0.6333333333333333,
+      "color": "#d8b4fe",
+      "marker": "^"
+    },
+    {
+      "policy": "pi0_droid_jointpos_100k",
+      "environment": "Block Stacking (UW)",
+      "sim": 0.312,
+      "real": 0.45,
+      "color": "#5b21b6",
+      "marker": "D"
+    },
+    {
+      "policy": "pi0_droid_jointpos_100k",
+      "environment": "Food Bussing (UW)",
+      "sim": 0.39,
+      "real": 0.5,
+      "color": "#7c3aed",
+      "marker": "D"
+    },
+    {
+      "policy": "pi0_droid_jointpos_100k",
+      "environment": "Move Latte Cup (Princeton)",
+      "sim": 0.26666666666,
+      "real": 0.3833333333333333,
+      "color": "#a855f7",
+      "marker": "D"
+    },
+    {
+      "policy": "pi0_droid_jointpos_100k",
+      "environment": "Organize Tools (Princeton)",
+      "sim": 0.16666666665,
+      "real": 0.4333333333333333,
+      "color": "#c084fc",
+      "marker": "D"
+    },
+    {
+      "policy": "pi0_droid_jointpos_100k",
+      "environment": "Pan Cleaning (UW)",
+      "sim": 0.33,
+      "real": 0.4230769230769231,
+      "color": "#9333ea",
+      "marker": "D"
+    },
+    {
+      "policy": "pi0_droid_jointpos_100k",
+      "environment": "Tape Into Container (Princeton)",
+      "sim": 0.46666666665999995,
+      "real": 0.4333333333333333,
+      "color": "#d8b4fe",
+      "marker": "D"
+    },
+    {
+      "policy": "pi0_fast_droid_jointpos",
+      "environment": "Block Stacking (UW)",
+      "sim": 0.26,
+      "real": 0.6000000000000001,
+      "color": "#5b21b6",
+      "marker": "v"
+    },
+    {
+      "policy": "pi0_fast_droid_jointpos",
+      "environment": "Food Bussing (UW)",
+      "sim": 0.53,
+      "real": 0.875,
+      "color": "#7c3aed",
+      "marker": "v"
+    },
+    {
+      "policy": "pi0_fast_droid_jointpos",
+      "environment": "Move Latte Cup (Princeton)",
+      "sim": 0.33333333333,
+      "real": 0.6666666666666667,
+      "color": "#a855f7",
+      "marker": "v"
+    },
+    {
+      "policy": "pi0_fast_droid_jointpos",
+      "environment": "Organize Tools (Princeton)",
+      "sim": 0.33333333332,
+      "real": 0.6833333333333333,
+      "color": "#c084fc",
+      "marker": "v"
+    },
+    {
+      "policy": "pi0_fast_droid_jointpos",
+      "environment": "Pan Cleaning (UW)",
+      "sim": 0.325,
+      "real": 0.3125,
+      "color": "#9333ea",
+      "marker": "v"
+    },
+    {
+      "policy": "pi0_fast_droid_jointpos",
+      "environment": "Tape Into Container (Princeton)",
+      "sim": 0.53333333334,
+      "real": 0.65,
+      "color": "#d8b4fe",
+      "marker": "v"
+    }
+  ],
+  "libero_points": [
+    {
+      "policy": "paligemma_binning_droid_jointpos",
+      "environment": "Block Stacking (UW)",
+      "sim": 0.5555555555555556,
+      "real": 0.3666666666666667,
+      "color": "#0e3a5f",
+      "marker": "o"
+    },
+    {
+      "policy": "paligemma_binning_droid_jointpos",
+      "environment": "Food Bussing (UW)",
+      "sim": 0.5555555555555556,
+      "real": 0.3,
+      "color": "#2562eb",
+      "marker": "o"
+    },
+    {
+      "policy": "paligemma_binning_droid_jointpos",
+      "environment": "Move Latte Cup (Princeton)",
+      "sim": 0.5555555555555556,
+      "real": 0.13333333333333333,
+      "color": "#60a5fa",
+      "marker": "o"
+    },
+    {
+      "policy": "paligemma_binning_droid_jointpos",
+      "environment": "Organize Tools (Princeton)",
+      "sim": 0.5555555555555556,
+      "real": 0.4666666666666666,
+      "color": "#93c5fd",
+      "marker": "o"
+    },
+    {
+      "policy": "paligemma_binning_droid_jointpos",
+      "environment": "Pan Cleaning (UW)",
+      "sim": 0.5555555555555556,
+      "real": 0.025,
+      "color": "#3b82f6",
+      "marker": "o"
+    },
+    {
+      "policy": "paligemma_binning_droid_jointpos",
+      "environment": "Tape Into Container (Princeton)",
+      "sim": 0.5555555555555556,
+      "real": 0.15,
+      "color": "#bfdbfe",
+      "marker": "o"
+    },
+    {
+      "policy": "pi05_droid_jointpos",
+      "environment": "Block Stacking (UW)",
+      "sim": 0.9188888888888888,
+      "real": 0.8333333333333334,
+      "color": "#0e3a5f",
+      "marker": "s"
+    },
+    {
+      "policy": "pi05_droid_jointpos",
+      "environment": "Food Bussing (UW)",
+      "sim": 0.9188888888888888,
+      "real": 0.7,
+      "color": "#2562eb",
+      "marker": "s"
+    },
+    {
+      "policy": "pi05_droid_jointpos",
+      "environment": "Move Latte Cup (Princeton)",
+      "sim": 0.9188888888888888,
+      "real": 0.85,
+      "color": "#60a5fa",
+      "marker": "s"
+    },
+    {
+      "policy": "pi05_droid_jointpos",
+      "environment": "Organize Tools (Princeton)",
+      "sim": 0.9188888888888888,
+      "real": 0.85,
+      "color": "#93c5fd",
+      "marker": "s"
+    },
+    {
+      "policy": "pi05_droid_jointpos",
+      "environment": "Pan Cleaning (UW)",
+      "sim": 0.9188888888888888,
+      "real": 0.7,
+      "color": "#3b82f6",
+      "marker": "s"
+    },
+    {
+      "policy": "pi05_droid_jointpos",
+      "environment": "Tape Into Container (Princeton)",
+      "sim": 0.9188888888888888,
+      "real": 0.75,
+      "color": "#bfdbfe",
+      "marker": "s"
+    },
+    {
+      "policy": "pi0_droid_jointpos",
+      "environment": "Block Stacking (UW)",
+      "sim": 0.8602222222222222,
+      "real": 0.35000000000000003,
+      "color": "#0e3a5f",
+      "marker": "^"
+    },
+    {
+      "policy": "pi0_droid_jointpos",
+      "environment": "Food Bussing (UW)",
+      "sim": 0.8602222222222222,
+      "real": 0.35,
+      "color": "#2562eb",
+      "marker": "^"
+    },
+    {
+      "policy": "pi0_droid_jointpos",
+      "environment": "Move Latte Cup (Princeton)",
+      "sim": 0.8602222222222222,
+      "real": 0.3833333333333333,
+      "color": "#60a5fa",
+      "marker": "^"
+    },
+    {
+      "policy": "pi0_droid_jointpos",
+      "environment": "Organize Tools (Princeton)",
+      "sim": 0.8602222222222222,
+      "real": 0.4833333333333333,
+      "color": "#93c5fd",
+      "marker": "^"
+    },
+    {
+      "policy": "pi0_droid_jointpos",
+      "environment": "Pan Cleaning (UW)",
+      "sim": 0.8602222222222222,
+      "real": 0.35,
+      "color": "#3b82f6",
+      "marker": "^"
+    },
+    {
+      "policy": "pi0_droid_jointpos",
+      "environment": "Tape Into Container (Princeton)",
+      "sim": 0.8602222222222222,
+      "real": 0.6333333333333333,
+      "color": "#bfdbfe",
+      "marker": "^"
+    },
+    {
+      "policy": "pi0_droid_jointpos_100k",
+      "environment": "Block Stacking (UW)",
+      "sim": 0.8771111111111111,
+      "real": 0.45,
+      "color": "#0e3a5f",
+      "marker": "D"
+    },
+    {
+      "policy": "pi0_droid_jointpos_100k",
+      "environment": "Food Bussing (UW)",
+      "sim": 0.8771111111111111,
+      "real": 0.5,
+      "color": "#2562eb",
+      "marker": "D"
+    },
+    {
+      "policy": "pi0_droid_jointpos_100k",
+      "environment": "Move Latte Cup (Princeton)",
+      "sim": 0.8771111111111111,
+      "real": 0.3833333333333333,
+      "color": "#60a5fa",
+      "marker": "D"
+    },
+    {
+      "policy": "pi0_droid_jointpos_100k",
+      "environment": "Organize Tools (Princeton)",
+      "sim": 0.8771111111111111,
+      "real": 0.4333333333333333,
+      "color": "#93c5fd",
+      "marker": "D"
+    },
+    {
+      "policy": "pi0_droid_jointpos_100k",
+      "environment": "Pan Cleaning (UW)",
+      "sim": 0.8771111111111111,
+      "real": 0.4230769230769231,
+      "color": "#3b82f6",
+      "marker": "D"
+    },
+    {
+      "policy": "pi0_droid_jointpos_100k",
+      "environment": "Tape Into Container (Princeton)",
+      "sim": 0.8771111111111111,
+      "real": 0.4333333333333333,
+      "color": "#bfdbfe",
+      "marker": "D"
+    },
+    {
+      "policy": "pi0_fast_droid_jointpos",
+      "environment": "Block Stacking (UW)",
+      "sim": 0.8944444444444445,
+      "real": 0.6000000000000001,
+      "color": "#0e3a5f",
+      "marker": "v"
+    },
+    {
+      "policy": "pi0_fast_droid_jointpos",
+      "environment": "Food Bussing (UW)",
+      "sim": 0.8944444444444445,
+      "real": 0.875,
+      "color": "#2562eb",
+      "marker": "v"
+    },
+    {
+      "policy": "pi0_fast_droid_jointpos",
+      "environment": "Move Latte Cup (Princeton)",
+      "sim": 0.8944444444444445,
+      "real": 0.6666666666666667,
+      "color": "#60a5fa",
+      "marker": "v"
+    },
+    {
+      "policy": "pi0_fast_droid_jointpos",
+      "environment": "Organize Tools (Princeton)",
+      "sim": 0.8944444444444445,
+      "real": 0.6833333333333333,
+      "color": "#93c5fd",
+      "marker": "v"
+    },
+    {
+      "policy": "pi0_fast_droid_jointpos",
+      "environment": "Pan Cleaning (UW)",
+      "sim": 0.8944444444444445,
+      "real": 0.3125,
+      "color": "#3b82f6",
+      "marker": "v"
+    },
+    {
+      "policy": "pi0_fast_droid_jointpos",
+      "environment": "Tape Into Container (Princeton)",
+      "sim": 0.8944444444444445,
+      "real": 0.65,
+      "color": "#bfdbfe",
+      "marker": "v"
+    }
+  ],
+  "environments": [
+    "Block Stacking (UW)",
+    "Food Bussing (UW)",
+    "Pan Cleaning (UW)",
+    "Move Latte Cup (Princeton)",
+    "Organize Tools (Princeton)",
+    "Tape Into Container (Princeton)"
+  ],
+  "policies": [
+    "paligemma_binning_droid_jointpos",
+    "pi05_droid_jointpos",
+    "pi0_droid_jointpos",
+    "pi0_droid_jointpos_100k",
+    "pi0_fast_droid_jointpos"
+  ]
+}

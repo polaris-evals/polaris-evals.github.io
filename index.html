@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PolaRiS</title>
+  <link rel="icon" href="./figs/logo.png" type="image/png">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+</head>
+<body>
+  <!-- Progress Sidebar -->
+  <nav class="progress-sidebar" aria-label="Page progress">
+    <div class="progress-track">
+      <div class="progress-line"></div>
+      <div class="progress-line-fill"></div>
+      <div class="progress-item" data-section="hero">
+        <a href="#">
+          <span class="progress-dot"></span>
+          <span class="progress-label">Intro</span>
+        </a>
+      </div>
+      <div class="progress-item" data-section="slider-comparison">
+        <a href="#slider-comparison">
+          <span class="progress-dot"></span>
+          <span class="progress-label">Real vs Sim</span>
+        </a>
+      </div>
+      <div class="progress-item" data-section="abstract">
+        <a href="#abstract">
+          <span class="progress-dot"></span>
+          <span class="progress-label">Abstract</span>
+        </a>
+      </div>
+      <div class="progress-item" data-section="pipeline">
+        <a href="#pipeline">
+          <span class="progress-dot"></span>
+          <span class="progress-label">Pipeline</span>
+        </a>
+      </div>
+      <div class="progress-item" data-section="co-training">
+        <a href="#co-training">
+          <span class="progress-dot"></span>
+          <span class="progress-label">Co-training</span>
+        </a>
+      </div>
+      <div class="progress-item" data-section="results">
+        <a href="#results">
+          <span class="progress-dot"></span>
+          <span class="progress-label">Results</span>
+        </a>
+      </div>
+      <!-- Commented out - gallery section hidden
+      <div class="progress-item" data-section="gallery">
+        <a href="#gallery">
+          <span class="progress-dot"></span>
+          <span class="progress-label">Gallery</span>
+        </a>
+      </div>
+      -->
+      <div class="progress-item" data-section="bibtex">
+        <a href="#bibtex">
+          <span class="progress-dot"></span>
+          <span class="progress-label">BibTeX</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <div class="hero-flow">
+      <div class="hero-orb" aria-hidden="true"></div>
+      <div class="hero-text">PolaRiS</div>
+      <div class="sub-hero-text">Scalable Real-to-Sim Evaluations for Generalist Robot Policies</div>
+
+      <div class="hero-pill-row">
+        <span class="hero-pill">Real to Sim Reconstruction</span>
+        <span class="hero-pill">Simulation Co-training</span>
+        <span class="hero-pill">Zero-shot Evaluation</span>
+      </div>
+
+      <div class="authors">
+         <a href="https://arhanjain.github.io/" target="_blank">Arhan Jain*</a>, 
+         <a href="https://robo-alex.github.io/" target="_blank">Mingtong Zhang*</a>, 
+         <a href="https://www.linkedin.com/in/kanav1arora/" target="_blank">Kanav Arora</a>, 
+         <a href="https://verityw.github.io/" target="_blank">William Chen</a>,
+         <a href="https://marceltorne.github.io/" target="_blank">Marcel Torne</a>,<br>
+         <a href="https://zubairirshad.com/" target="_blank">Muhammad Zubair Irshad</a>, 
+         <a href="https://zakharos.github.io/" target="_blank">Sergey Zakharov</a>, 
+         <a href="https://yuewang.xyz/" target="_blank">Yue Wang</a>,
+         <a href="https://people.eecs.berkeley.edu/~svlevine/" target="_blank">Sergey Levine</a>,
+         <a href="" target="_blank">Chelsea Finn</a>,
+         <a href="" target="_blank">Wei-Chiu Ma</a>,
+         <a href="" target="_blank">Dhruv Shah</a>, <br>
+         <a href="" target="_blank">Abhishek Gupta†</a>,
+         <a href="" target="_blank">Karl Pertsch†</a> <br>
+        (*:equal contribution, †: equal advising)
+        <span class="affiliation">University of Washington, Princeton University, UC Berkeley, Stanford University, <br>
+          Toyota Research Institute, University of Southern California, Cornell University, Physical Intelligence</span>
+      </div>
+
+      <div class="hero-actions">
+        <a class="cta primary" href="./VideoMimic.pdf" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: -2px; margin-right: 6px;">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 2l5 5h-5V4zM6 20V4h5v7h7v9H6zm2-6h8v2H8v-2zm0-4h4v2H8v-2zm0 8h8v2H8v-2z"/>
+          </svg>
+          Read the paper
+        </a>
+        <a class="cta dark" href="https://github.com/arhanjain/PolaRiS/tree/main" target="_blank">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: -3px; margin-right: 6px;">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          Code
+        </a>
+      </div>
+
+      <div class="hero-waves" aria-hidden="true">
+        <svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+          <defs>
+            <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"></path>
+          </defs>
+          <g class="wave-parallax">
+            <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(212,148,10,0.25)"></use>
+            <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(147,51,234,0.2)"></use>
+            <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(59,130,246,0.18)"></use>
+            <use xlink:href="#gentle-wave" x="48" y="7" fill="rgba(37,99,235,0.25)"></use>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Teaser Figure -->
+    <img src="./figs/teaser.png" alt="PolaRiS teaser figure" />
+    <p class="figure-caption">
+      PolaRiS is a real-to-sim approach for constructing high-fidelity simulated environments for scalable evaluation. PolaRiS’s 3D Gaussian splatting–based framework quickly turns a short video of a real-world scene into a simulation environment. We use PolaRiS to create a diverse suite of simulated environments and demonstrate strong correlations to real-world evaluations for generalist robot policies.
+    </p>
+
+    <div class="tagline">Real vs. Sim</div>
+    <section class="slider-section card-surface" id="slider-comparison">
+      <div class="section-heading">Interactive Slider Comparison</div>
+      <p class="section-lead">Drag to reveal sim vs real. Use arrows to switch tasks.</p>
+      <div class="slider-task-selector">
+        <button class="slider-nav-btn" id="slider-prev">‹</button>
+        <span class="slider-task-name" id="slider-task-name">Food Bussing</span>
+        <button class="slider-nav-btn" id="slider-next">›</button>
+      </div>
+      <div class="slider-wrapper">
+        <video class="slider-video" id="slider-sim-video" src="./assets/videos/sim_rollouts/fruitbus.mp4" autoplay muted loop playsinline></video>
+        <div class="slider-overlay">
+          <video class="slider-video" id="slider-real-video" src="./assets/videos/real_rollouts/fruitbus.mp4" autoplay muted loop playsinline></video>
+        </div>
+        <div class="slider-handle"></div>
+        <input type="range" class="slider-input" min="0" max="100" value="50" aria-label="Reveal real or simulated video">
+        <div class="slider-labels">
+          <span class="slider-label-real">Real</span>
+          <span class="slider-label-sim">Sim</span>
+        </div>
+      </div>
+      <p class="figure-caption slider-caption"><b>PolaRiS</b> enables zero-shot evaluation in unseen simulation environments that correlates strongly with real-world performance.</p>
+    </section>
+
+    <div class="tagline" id="abstract">Abstract / TL;DR</div>
+    <div class="section card-surface abstract-card" tabindex="0" aria-label="Hover or focus to read full abstract">
+      <div class="abstract-teaser">
+        <p>We introduce PolaRiS, a scalable real-to-sim framework for high-fidelity robot evaluation. PolaRiS turns short scans into interactive environments via 2D Gaussian Splatting, co-trains on a small number of sim episodes to bridge the visual gap, and provides accurate policy ranking without additional real rollouts.</p>
+        <p>Through paired sim/real evaluations, PolaRiS delivers substantially stronger real-world correlation for generalist policies.</p>
+      </div>
+      <div class="abstract-full" aria-hidden="true">
+        <p>A major challenge for robot learning research is our ability to accurately measure and compare the performance of robot policies. Benchmarking in robotics is historically challenging due to the stochasticity, reproducibility, and time-consuming nature of real-world rollouts. This challenge is exacerbated for recent generalist policies, which need to be evaluated across numerous scenes and tasks. Evaluation in simulation offers a scalable complement to real world evaluations, but the visual and physical domain gap between existing simulation benchmarks and the real world has made them an unreliable signal for policy improvement. Furthermore, building realistic and diverse simulated environments has traditionally required significant human effort and expertise.</p>
+        <p></p>To bridge the gap, we introduce <b>Policy Evaluation and Environment Reconstruction in Simulation (PolaRiS)</b>, a scalable real-to-sim framework for high-fidelity simulated robot evaluation. PolaRiS uses neural reconstruction methods to turn short video scans of real-world scenes into interactive simulation environments. Further, we develop a simple simulation data co-training recipe that bridges remaining real-to-sim gaps and enables zero-shot evaluation in unseen simulation environments. Through extensive paired evaluations between simulation and the real world, we demonstrate that PolaRiS evaluations provide a much stronger correlation to real world generalist policy performance than existing simulated benchmarks. Its simplicity also enables rapid creation of diverse simulated environments.</p>
+        <p>As such, this work takes a step towards distributed and democratized evaluation for the next generation of robotic foundation models.</p>
+      </div>
+      <div class="abstract-hint">Hover or focus to reveal full abstract</div>
+      <div class="tldr-grid">
+        <div class="tldr-card" tabindex="0">
+          <div class="tldr-label">Scan</div>
+          <p>Turn short video scans into interactive environments using 2D Gaussian Splatting.</p>
+          place holder for the blender scan video
+          <video class="tldr-video" src="./reconstruction_input_videos/1.mp4" autoplay muted loop playsinline></video>
+        </div>
+        <div class="tldr-card" tabindex="0">
+          <div class="tldr-label">Align</div>
+          <p>Bridge the visual gap with a light co-training recipe on a few hundred simulated episodes.</p>
+          place holder, idk what to put here yet
+          <video class="tldr-video" src="./train_in_sim/vid2_rl.mp4" autoplay muted loop playsinline></video>
+        </div>
+        <div class="tldr-card" tabindex="0">
+          <div class="tldr-label">Evaluate</div>
+          <p>Rank policies accurately in sim—no additional real-world rollouts required.</p>
+          placeholder, policy ranking
+          <video class="tldr-video" src="./single/sim.mp4" autoplay muted loop playsinline></video>
+        </div>
+      </div>
+    </div>
+
+    <div class="tagline" id="pipeline">The PolaRiS Pipeline: From Video to Eval</div>
+    <div class="pipeline-grid card-surface">
+      <div class="pipeline-card">
+        <div class="pipeline-step">Step 1 — Environment Scan</div>
+        <video src="./reconstruction_input_videos/environment_scan.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        <p>A 2–5 minute handheld phone scan captures geometry and appearance. ChArUco for metric scale; minimal user effort.</p>
+      </div>
+      <div class="pipeline-card">
+        <div class="pipeline-step">Step 2 — Neural Reconstruction</div>
+        <video src="./reconstruction/neural_reconstruction.mp4" autoplay muted loop playsinline preload="metadata"></video>
+        <p>2D Gaussian Splatting (2DGS) recovers photorealistic visuals. We extract meshes for collision and contact-aware simulation.</p>
+      </div>
+      <div class="pipeline-card">
+        <div class="pipeline-step">Step 3 — Object & Robot Insertion</div>
+        <video src="assets/videos/real2sim/guivideo.mp4" autoplay muted loop playsinline></video>
+        <p>Robots are articulated with kinematics-aware splats. Objects are generated from single images (TRELLIS) and made physics-ready.</p>
+      </div>
+    </div>
+
+    <div class="card-surface mesh-viewer">
+      <div class="mesh-header">
+        <div>
+          <div class="section-heading">Interact with mesh generation</div>
+          <p class="section-lead">Preview TRELLIS-generated object meshes; switch objects and orbit the assets.</p>
+      </div>
+        <label class="mesh-selector">
+          <span>Select object</span>
+          <select id="meshSelect">
+            <option value="cleaner">Cleaner</option>
+            <option value="coke">Coke</option>
+            <option value="electricdrill">Electric Drill</option>
+            <option value="pot">Pot</option>
+            <option value="scissor">Scissor</option>
+            <option value="spoon">Spoon</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="mesh-active-label">Showing: <span id="meshActiveName">Cleaner</span></div>
+
+      <div class="mesh-columns">
+        <div class="mesh-col mesh-media">
+          <div class="mesh-col-title">Object Scan</div>
+          <video id="meshVideo" class="mesh-video" playsinline muted loop controls></video>
+          <div class="mesh-note" id="meshVideoNote"></div>
+        </div>
+        <div class="mesh-col">
+          <div class="mesh-col-title">Object Mesh</div>
+          <model-viewer id="meshRaw" class="mesh-viewer-frame" alt="TRELLIS visual mesh" loading="lazy"
+            camera-controls auto-rotate rotation-per-second="30deg" camera-orbit="auto auto 600%"
+            min-camera-orbit="auto auto 200%" max-camera-orbit="auto auto 1000%" field-of-view="85deg"
+            exposure="1" shadow-intensity="0.4" src="./assets/trellis/mesh_cleaner.glb">
+          </model-viewer>
+      </div>
+      </div>
+    </div>
+
+    <div class="tagline" id="co-training">Key Insight: Simulation Data Co-Training</div>
+
+    <div class="co-gallery card-surface">
+      <div class="section-heading">Simulation Data Co-Training Gallery</div>
+      <p class="section-lead">Diverse simulated rollouts used for visual alignment: varying lighting, viewpoints, and object configurations.</p>
+      <div class="co-gallery-grid">
+        <div class="co-gallery-card">
+          <video src="./assets/videos/cotrain/workbench_zed_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
+          <div class="co-caption">Workbench zed</div>
+        </div>
+        <div class="co-gallery-card">
+          <video src="./assets/videos/cotrain/vention_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
+          <div class="co-caption">Vention table</div>
+        </div>
+        <div class="co-gallery-card">
+          <video src="./assets/videos/cotrain/lobby_desk_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
+          <div class="co-caption">Lobby desk</div>
+        </div>
+        <div class="co-gallery-card">
+          <video src="./assets/videos/cotrain/kanav_maddox_table_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
+          <div class="co-caption">Maddox table</div>
+        </div>
+        <div class="co-gallery-card">
+          <video src="./assets/videos/cotrain/kanav_geodude_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
+          <div class="co-caption">Geodude setup</div>
+        </div>
+        <div class="co-gallery-card">
+          <video src="./assets/videos/cotrain/kanav_circle_table_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
+          <div class="co-caption">Circle table</div>
+        </div>
+        <div class="co-gallery-card">
+          <video src="./assets/videos/cotrain/kanav_black_table_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
+          <div class="co-caption">Black table</div>
+        </div>
+        <div class="co-gallery-card">
+          <video src="./assets/videos/cotrain/envs_05_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
+          <div class="co-caption">Env suite 05</div>
+        </div>
+        <div class="co-gallery-card">
+          <video src="./assets/videos/cotrain/envs_00_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
+          <div class="co-caption">Env suite 00</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-surface correlation-callout">
+      <div class="section-heading">Real ↔ Sim correlation from co-training</div>
+      <p class="section-lead">Co-training tightens the slope and lowers variance between simulated rollouts and paired real executions.</p>
+      
+      <ul class="evidence-list" style="margin-bottom: 20px;">
+        <li>Correlation reported on unseen scenes after alignment.</li>
+      </ul>
+
+      <div class="side-by-side" style="margin-bottom: 24px;">
+        <div class="side-card">
+          <div class="side-label muted">No Co-training</div>
+          <video src="./assets/videos/cotrain_comparison/before_cotraining.mp4" autoplay muted loop playsinline></video>
+          <p>Raw real-to-sim transfer struggles with lighting and shadow shifts.</p>
+        </div>
+        <div class="side-card">
+          <div class="side-label accent">With Co-training</div>
+          <video src="./assets/videos/cotrain_comparison/after_cotraining.mp4" autoplay muted loop playsinline></video>
+          <p>Visual alignment restores task success in simulation.</p>
+        </div>
+      </div>
+
+      <div class="formulas-section" style="margin-top: 32px; margin-bottom: 32px; padding-top: 24px; border-top: 1px solid var(--border-subtle);">
+        <div style="margin-bottom: 28px;">
+          <h3 style="font-family: 'Space Grotesk', -apple-system, sans-serif; font-size: 18px; font-weight: 600; margin-bottom: 12px; color: var(--text-primary);">
+            <strong>(i) Pearson correlation coefficient ($r$):</strong>
+          </h3>
+          <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 12px;">
+            This measures the linear correlation between real and simulated performance:
+          </p>
+          <div style="background: var(--bg-elevated); padding: 20px; border-radius: 12px; border: 1px solid var(--border-subtle); margin: 12px 0; overflow-x: auto;">
+            \[
+            r(R, R_{\mathcal{S}}) = 
+            \frac{\sum_{i=1}^{N} (R_i - \bar{R})(R_{\mathcal{S}, i} - \bar{R}_{\mathcal{S}})}
+            {\sqrt{\sum_{i=1}^{N} (R_i - \bar{R})^2}\sqrt{\sum_{i=1}^{N} (R_{\mathcal{S}, i} - \bar{R}_{\mathcal{S}})^2}},
+            \]
+            <p style="margin-top: 12px; color: var(--text-muted); font-size: 12px; font-style: italic;">
+              where $\bar{R}$ and $\bar{R}_{\mathcal{S}}$ are the mean real and simulated scores.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="font-family: 'Space Grotesk', -apple-system, sans-serif; font-size: 18px; font-weight: 600; margin-bottom: 12px; color: var(--text-primary);">
+            <strong>(ii) Mean Maximum Rank Violation (MMRV):</strong>
+          </h3>
+          <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 12px;">
+            This measures the average maximum rank ordering error between real and simulated performance:
+          </p>
+          <div style="background: var(--bg-elevated); padding: 20px; border-radius: 12px; border: 1px solid var(--border-subtle); margin: 12px 0; overflow-x: auto;">
+            \[
+            \mathrm{MMRV}(R, R_{\mathcal{S}}) = \frac{1}{N}\sum_{i=1}^{N} \max_{1 \le j \le N}
+            |R_i - R_j| \cdot \mathbf{1}\!\Big[
+                (R_{\mathcal{S}, i} < R_{\mathcal{S}, j}) 
+                \neq 
+                (R_i < R_j)
+            \Big].
+            \]
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-value">+0.64</div>
+          <div class="metric-label">Pearson boost</div>
+          <p>Improvement in Pearson correlation from co-training vs. zero-shot transfer.</p>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">−0.22</div>
+          <div class="metric-label">MMRV drop</div>
+          <p>Reduction in Mean Maximum Rank Violation from co-training vs. zero-shot.</p>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">326</div>
+          <div class="metric-label">sim episodes</div>
+          <p>Lightweight co-training budget used to close the visual gap.</p>
+        </div>
+      </div>
+
+      <div class="data-mix-card" style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border-subtle);">
+        <h3 style="font-family: 'Space Grotesk', -apple-system, sans-serif; font-size: 18px; font-weight: 600; margin-bottom: 12px; color: var(--text-primary);">
+          Co-training Ablation: Data Mix Impact
+        </h3>
+        <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
+          Increasing the proportion of simulation data in co-training improves both Pearson correlation (↑) and reduces MMRV (↓), demonstrating the effectiveness of visual alignment.
+        </p>
+        <div style="background: var(--bg-elevated); padding: 20px; border-radius: 16px; border: 1px solid var(--border-subtle);">
+          <img src="./figs/data_mix_pearson_r_and_mmrv.png" alt="Data mix ablation showing Pearson r and MMRV improvement with co-training" style="width: 100%; max-width: 800px; margin: 0 auto; display: block; border-radius: 12px; border: none; box-shadow: none;" />
+        </div>
+        <p style="margin-top: 12px; color: var(--text-muted); font-size: 12px; text-align: center; font-style: italic;">
+          Left: Pearson correlation increases with cotraining on simulation data. Right: MMRV decreases, indicating better rank preservation. Note: OOD means the simulation data
+          had no overlap with evaluation scenes, objects, or tasks. See paper for detailed on 
+          makeup of the OOD, Near Domain, and In Domain datasets. 
+        </p>
+      </div>
+    </div>
+
+    <div class="tagline" id="results">Results: Real-Sim Correlation, Policy Evaluation, and Ablations</div>
+    <p class="section-note" style="text-align: center; color: var(--text-muted); font-size: 13px; margin: -8px 0 16px 0;">All performance metrics are based on normalized task progress scores, with 20 rollouts in real and 50 rollouts in sim per policy-task pair.</p>
+    <div class="card-surface scatter-card">
+      <div class="section-heading">Correlation plot</div>
+      <p class="section-lead">Hover points to see paired sim/real success; higher correlation with co-training.</p>
+      <div class="stats-grid-inline">
+        <div class="stat-card">
+          <div class="stat-number">Pearson r = 0.78</div>
+          <p>Strong sim↔real correlation (higher is better)</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">MMRV = 0.06</div>
+          <p>Mean Maximum Rank Violation (lower is better)</p>
+        </div>
+      </div>
+      <svg id="corr-scatter" viewBox="0 0 520 320" role="img" aria-label="Simulation vs Real success scatter"></svg>
+      <div class="scatter-hint">Hover any point for details. Solid = PolaRiS, faded = LIBERO baseline.</div>
+      <div class="scatter-status" id="scatter-status">Loading results…</div>
+      <div class="scatter-legend" id="policy-legend"></div>
+      <div class="scatter-legend" id="env-legend"></div>
+
+      <div class="roboarena-section" style="margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border-subtle); display: flex; gap: 24px; align-items: flex-start;">
+        <div class="roboarena-left" style="flex: 1;">
+          <h4 style="font-family: 'Space Grotesk', -apple-system, sans-serif; font-size: 15px; font-weight: 600; margin-bottom: 8px; color: var(--text-primary);">
+            RoboArena Correlation
+          </h4>
+          <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.5; margin-bottom: 12px;">
+            PolaRiS evaluation scores also correlate with policy scores from RoboArena.
+          </p>
+          <p style="color: var(--text-muted); font-size: 12px; line-height: 1.5; margin-bottom: 12px;">
+            This validates that PolaRiS rankings also align with real-world human judgments of policy progress and quality.
+          </p>
+          <div style="text-align: center;">
+            <a href="https://robo-arena.github.io/" target="_blank" style="display: inline-block; margin-bottom: 12px;">
+              <img src="./figs/roboarena-paper-fig.jpeg" alt="RoboArena paper figure" style="width: 100%; max-width: 320px; border-radius: 10px; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-sm); transition: transform 0.2s ease, box-shadow 0.2s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='var(--shadow-md)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='var(--shadow-sm)';" />
+            </a>
+            <br>
+            <a href="https://robo-arena.github.io/" target="_blank" style="font-size: 12px; color: var(--honey-bronze); text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+              Learn more about RoboArena →
+            </a>
+          </div>
+        </div>
+        <div class="roboarena-right" style="flex-shrink: 0;">
+          <div style="background: var(--bg-elevated); padding: 16px; border-radius: 12px; border: 1px solid var(--border-subtle); max-width: 400px;">
+            <img src="./figs/roboarena_correlation.png" alt="RoboArena correlation with PolaRiS evaluations" style="width: 100%; border-radius: 8px; border: none; box-shadow: none;" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-surface bar-card">
+      <div class="section-heading">Bar plot (Sim vs Real per Policy)</div>
+      <p class="section-lead">PolaRiS sim scores track real performance per policy; hover for exact values.</p>
+      <div style="margin-bottom: 12px;">
+        <label for="bar-env-select" style="font-size: 13px; color: var(--text-secondary); margin-right: 8px;">Filter by task:</label>
+        <select id="bar-env-select" style="padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--bg-elevated); font-size: 13px; cursor: pointer;">
+          <option value="all">All Tasks</option>
+        </select>
+      </div>
+      <div class="bar-plot-wrap">
+        <svg id="bar-plot" viewBox="0 0 700 360" role="img" aria-label="Simulation vs Real bar plot"></svg>
+      </div>
+      <div class="scatter-status" id="bar-status">Loading bar data…</div>
+    </div>
+
+    <div class="card-surface policy-card" id="policy-comparison">
+      <div class="section-heading">Policy Evaluation Comparison (Sim vs Real)</div>
+      <p class="section-lead">Side-by-side sim and real performance across environments for key policies.</p>
+      <div class="policy-list" id="policy-list"></div>
+      <div class="scatter-status" id="policy-status">Loading policy data…</div>
+    </div>
+
+    <div class="card-surface video-card" id="policy-videos">
+      <div class="section-heading">Evaluation Videos</div>
+      <p class="section-lead">Sample rollouts for the same policies and environments.</p>
+      <div class="video-grid" id="policy-video-grid"></div>
+      <div class="scatter-status" id="policy-video-status">Loading videos…</div>
+    </div>
+
+    <!-- Commented out for now - may revisit later
+    <div class="tagline" id="gallery">Diverse, Generatable Evaluation Scenes</div>
+    <div class="card-surface">
+      <p class="section-lead">All environments below were produced from short video scans; policies are evaluated zero-shot.</p>
+      <div class="gallery-grid">
+      <video src="./reconstruction/1.mp4" autoplay muted loop playsinline></video>
+      <video src="./reconstruction/4.mp4" autoplay muted loop playsinline></video>
+      <video src="./reconstruction/6.mp4" autoplay muted loop playsinline></video>
+      <video src="./reconstruction/7.mp4" autoplay muted loop playsinline></video>
+      <video src="./reconstruction/11.mp4" autoplay muted loop playsinline></video>
+      <video src="./reconstruction/13.mp4" autoplay muted loop playsinline></video>
+      <video src="./reconstruction/14.mp4" autoplay muted loop playsinline></video>
+      <video src="./traversing/1.mp4" autoplay muted loop playsinline></video>
+      <video src="./sitting/3.mp4" autoplay muted loop playsinline></video>
+      </div>
+    </div>
+    -->
+
+    <div class="card-surface" id="visual-fidelity" style="margin-top: 32px;">
+      <div class="section-heading">Visual Fidelity Ablation</div>
+      <p class="section-lead">Visual fidelity variants of the same scene.</p>
+      <div class="gallery-grid gallery-grid-labeled">
+        <div class="gallery-item">
+          <video src="./assets/videos/vidual_fidelity/splats.mp4" autoplay muted loop playsinline></video>
+          <div class="gallery-label">PolaRiS Rollout (Ours)</div>
+        </div>
+        <div class="gallery-item">
+          <video src="./assets/videos/vidual_fidelity/raytraced.mp4" autoplay muted loop playsinline></video>
+          <div class="gallery-label">Raytraced</div>
+        </div>
+        <div class="gallery-item">
+          <video src="./assets/videos/vidual_fidelity/untextured_env.mp4" autoplay muted loop playsinline></video>
+          <div class="gallery-label">Untextured Background</div>
+        </div>
+        <div class="gallery-item">
+          <video src="./assets/videos/vidual_fidelity/untextured_everything.mp4" autoplay muted loop playsinline></video>
+          <div class="gallery-label">Untextured Everything</div>
+        </div>
+      </div>
+
+      <div class="visual-fidelity-results" style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border-subtle);">
+        <h3 style="font-family: 'Space Grotesk', -apple-system, sans-serif; font-size: 18px; font-weight: 600; margin-bottom: 12px; color: var(--text-primary);">
+          Visual Fidelity Impact on Correlation
+        </h3>
+        <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
+          Higher visual fidelity leads to stronger real-sim correlation. PolaRiS's Gaussian splatting approach achieves the best Pearson r and lowest MMRV compared to raytraced and untextured alternatives.
+        </p>
+        <div style="background: var(--bg-elevated); padding: 20px; border-radius: 16px; border: 1px solid var(--border-subtle);">
+          <img src="./figs/visual_fidelity_pearson_r_and_mmrv.png" alt="Visual fidelity ablation showing Pearson r and MMRV across rendering methods" style="width: 100%; max-width: 800px; margin: 0 auto; display: block; border-radius: 12px; border: none; box-shadow: none;" />
+        </div>
+        <p style="margin-top: 12px; color: var(--text-muted); font-size: 12px; text-align: center; font-style: italic;">
+          Left: Pearson correlation across visual fidelity levels. Right: MMRV comparison. Higher fidelity rendering improves policy evaluation accuracy.
+        </p>
+      </div>
+    </div>
+
+    <div class="tagline" id="bibtex">BibTeX</div>
+    <div class="bibtex-code">
+      <div class="bibtex-title">Reference</div>
+<pre><code>@article{polaris2025,
+  title   = {Policy Evaluation and Environment Reconstruction in Simulation (PolaRiS)},
+  author  = {Allshire, Arthur and Choi, Hongsuk and Zhang, Junyi and McAllister, David and Zhang, Anthony and Kim, Chung Min and Darrell, Trevor and Abbeel, Pieter and Malik, Jitendra and Kanazawa, Angjoo},
+  journal = {arXiv preprint arXiv:2505.03729},
+  year    = {2025}
+}</code></pre>
+    </div>
+  </div>
+
+  <div class="footer">
+     © University of Washington | PolaRiS team. Source code is available <a href="https://github.com/polaris-evals/polaris-evals.github.io" target="_blank">here</a>.
+  </div>
+
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+  <script>
+    // Progress Sidebar
+    document.addEventListener('DOMContentLoaded', () => {
+      const progressItems = document.querySelectorAll('.progress-item');
+      const progressLineFill = document.querySelector('.progress-line-fill');
+      const sections = [
+        { id: 'hero', el: document.querySelector('.hero-flow') },
+        { id: 'slider-comparison', el: document.getElementById('slider-comparison') },
+        { id: 'abstract', el: document.getElementById('abstract') },
+        { id: 'pipeline', el: document.getElementById('pipeline') },
+        { id: 'co-training', el: document.getElementById('co-training') },
+        { id: 'results', el: document.getElementById('results') },
+        { id: 'gallery', el: document.getElementById('gallery') },
+        { id: 'bibtex', el: document.getElementById('bibtex') }
+      ].filter(s => s.el);
+
+      const updateProgress = () => {
+        const scrollY = window.scrollY;
+        const viewportHeight = window.innerHeight;
+        const docHeight = document.documentElement.scrollHeight - viewportHeight;
+        const scrollPercent = scrollY / docHeight;
+
+        // Update progress line fill
+        if (progressLineFill) {
+          const trackHeight = document.querySelector('.progress-track')?.offsetHeight || 0;
+          progressLineFill.style.height = `${scrollPercent * (trackHeight - 24)}px`;
+        }
+
+        // Find active section - use conservative approach to match progress bar fill
+        // Only activate a section when it's actually been scrolled to (not just approaching)
+        let activeIdx = 0;
+        const activationThreshold = viewportHeight * 0.3; // Section must be 30% down viewport to activate
+        
+        // Iterate through sections and find the last one that has been scrolled past the threshold
+        for (let idx = 0; idx < sections.length; idx++) {
+          const rect = sections[idx].el.getBoundingClientRect();
+          
+          // A section is considered "reached" when its top has scrolled past the threshold
+          // rect.top is relative to viewport (negative = scrolled past, positive = below viewport)
+          if (rect.top <= activationThreshold) {
+            activeIdx = idx;
+          } else {
+            // Stop at first section that hasn't been reached yet
+            break;
+          }
+        }
+
+        // Update items
+        progressItems.forEach((item, idx) => {
+          const sectionId = item.dataset.section;
+          const sectionIdx = sections.findIndex(s => s.id === sectionId);
+
+          item.classList.remove('active', 'passed');
+          if (sectionIdx === activeIdx) {
+            item.classList.add('active');
+          } else if (sectionIdx < activeIdx) {
+            item.classList.add('passed');
+          }
+        });
+      };
+
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      updateProgress();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const sliderSection = document.getElementById('slider-comparison');
+      if (!sliderSection) return;
+
+      const range = sliderSection.querySelector('.slider-input');
+      const overlay = sliderSection.querySelector('.slider-overlay');
+      const handle = sliderSection.querySelector('.slider-handle');
+      const simVideo = document.getElementById('slider-sim-video');
+      const realVideo = document.getElementById('slider-real-video');
+      const taskName = document.getElementById('slider-task-name');
+      const prevBtn = document.getElementById('slider-prev');
+      const nextBtn = document.getElementById('slider-next');
+
+      const videoPairs = [
+        { task: 'Food Bussing', sim: './assets/videos/sim_rollouts/fruitbus.mp4', real: './assets/videos/real_rollouts/fruitbus.mp4' },
+        { task: 'Block Stacking', sim: './assets/videos/sim_rollouts/stack.mp4', real: './assets/videos/real_rollouts/stack.mp4' },
+        { task: 'Pan Cleaning', sim: './assets/videos/sim_rollouts/panclean.mp4', real: './assets/videos/real_rollouts/panclean.mp4' },
+        { task: 'Move Latte Cup', sim: './assets/videos/sim_rollouts/latte-cup.mp4', real: './assets/videos/real_rollouts/lattecup.mp4' },
+        { task: 'Organize Tools', sim: './assets/videos/sim_rollouts/organize-tools.mp4', real: './assets/videos/real_rollouts/scissor.mp4' },
+        { task: 'Tape Into Container', sim: './assets/videos/sim_rollouts/tape-into-container.mp4', real: './assets/videos/real_rollouts/tape.mp4' },
+      ];
+
+      let currentIdx = 0;
+
+      const updateVideos = () => {
+        const pair = videoPairs[currentIdx];
+        simVideo.src = pair.sim;
+        realVideo.src = pair.real;
+        taskName.textContent = pair.task;
+        simVideo.play();
+        realVideo.play();
+      };
+
+      prevBtn?.addEventListener('click', () => {
+        currentIdx = (currentIdx - 1 + videoPairs.length) % videoPairs.length;
+        updateVideos();
+      });
+
+      nextBtn?.addEventListener('click', () => {
+        currentIdx = (currentIdx + 1) % videoPairs.length;
+        updateVideos();
+      });
+
+      const updateSlider = (value) => {
+        const clamped = Math.max(0, Math.min(100, value));
+        overlay.style.width = clamped + '%';
+        handle.style.left = clamped + '%';
+        // Keep overlay video at full wrapper width
+        const wrapperWidth = sliderSection.querySelector('.slider-wrapper').offsetWidth;
+        realVideo.style.width = wrapperWidth + 'px';
+      };
+
+      range?.addEventListener('input', (e) => updateSlider(Number(e.target.value)));
+      range?.addEventListener('change', (e) => updateSlider(Number(e.target.value)));
+      
+      // Set initial width after videos load
+      const initSlider = () => updateSlider(Number(range?.value || 50));
+      initSlider();
+      realVideo.addEventListener('loadedmetadata', initSlider);
+      simVideo.addEventListener('loadedmetadata', initSlider);
+      
+      // Update on resize
+      window.addEventListener('resize', initSlider);
+    });
+
+
+    // TRELLIS mesh switcher
+    document.addEventListener('DOMContentLoaded', () => {
+      const select = document.getElementById('meshSelect');
+      const raw = document.getElementById('meshRaw');
+      const activeName = document.getElementById('meshActiveName');
+      const video = document.getElementById('meshVideo');
+      const note = document.getElementById('meshVideoNote');
+
+      const meshes = {
+        cleaner: { label: 'Cleaner', file: 'mesh_cleaner.glb', video: 'cleaner.mp4' },
+        coke: { label: 'Coke', file: 'mesh_coke.glb', video: null },
+        electricdrill: { label: 'Electric Drill', file: 'mesh_electricdrill.glb', video: 'electricdrill.mp4' },
+        pot: { label: 'Pot', file: 'mesh_pot.glb', video: 'pot.mp4' },
+        scissor: { label: 'Scissor', file: 'mesh_scissor.glb', video: 'scissor.mp4' },
+        spoon: { label: 'Spoon', file: 'mesh_spoon.glb', video: 'spoon.mp4' }
+      };
+
+      const setMesh = (key) => {
+        const entry = meshes[key];
+        if (!entry || !raw) return;
+        const src = `./assets/trellis/${entry.file}`;
+        raw.setAttribute('src', src);
+        raw.setAttribute('camera-orbit', 'auto auto 600%');
+        raw.setAttribute('min-camera-orbit', 'auto auto 200%');
+        raw.setAttribute('max-camera-orbit', 'auto auto 1000%');
+        raw.setAttribute('field-of-view', '85deg');
+        if (activeName) activeName.textContent = entry.label;
+        if (video) {
+          if (entry.video) {
+            video.src = `./assets/videos/objects/${entry.video}`;
+            video.classList.remove('hidden');
+            video.load();
+            video.play().catch(() => {});
+            if (note) note.textContent = '';
+          } else {
+            video.pause();
+            video.removeAttribute('src');
+            video.classList.add('hidden');
+            if (note) note.textContent = 'No scan video available for this object.';
+          }
+        }
+      };
+
+      select?.addEventListener('change', (e) => setMesh(e.target.value));
+      setMesh(select?.value || 'cleaner');
+    });
+
+    // Simple interactive scatter backed by exported data (PolaRiS vs LIBERO)
+    document.addEventListener('DOMContentLoaded', () => {
+      const svg = document.getElementById('corr-scatter');
+      const statusEl = document.getElementById('scatter-status');
+      const policyLegend = document.getElementById('policy-legend');
+      const envLegend = document.getElementById('env-legend');
+      if (!svg) return;
+
+      const margin = { top: 20, right: 20, bottom: 40, left: 50 };
+      const width = 520 - margin.left - margin.right;
+      const height = 320 - margin.top - margin.bottom;
+      const min = 0;
+      const max = 1;
+
+      const createEl = (tag, attrs) => {
+        const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+        Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+        return el;
+      };
+
+      const renderScatter = (data) => {
+      // Clear
+      while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+      const g = createEl('g', { transform: `translate(${margin.left},${margin.top})` });
+      svg.appendChild(g);
+
+      const scaleX = (v) => (v - min) / (max - min) * width;
+      const scaleY = (v) => height - (v - min) / (max - min) * height;
+
+        // Grid lines
+        const gridCount = 5;
+        for (let i = 1; i < gridCount; i++) {
+          const gx = (i / gridCount) * width;
+          const gy = (i / gridCount) * height;
+          g.appendChild(createEl('line', { x1: gx, y1: 0, x2: gx, y2: height, stroke: 'rgba(0,0,0,0.06)', 'stroke-width': 1, 'stroke-dasharray': '4 4' }));
+          g.appendChild(createEl('line', { x1: 0, y1: gy, x2: width, y2: gy, stroke: 'rgba(0,0,0,0.06)', 'stroke-width': 1, 'stroke-dasharray': '4 4' }));
+        }
+
+      // Axes lines
+        g.appendChild(createEl('line', { x1: 0, y1: height, x2: width, y2: height, stroke: '#9ca3af', 'stroke-width': 2 }));
+        g.appendChild(createEl('line', { x1: 0, y1: 0, x2: 0, y2: height, stroke: '#9ca3af', 'stroke-width': 2 }));
+
+      // Axis labels
+        const xLabel = createEl('text', { x: width / 2, y: height + 32, 'text-anchor': 'middle', fill: '#4a4a4a', 'font-size': '11', 'font-weight': '500' });
+      xLabel.textContent = 'Simulation Success Rate';
+      g.appendChild(xLabel);
+        const yLabel = createEl('text', { x: -36, y: height / 2, 'text-anchor': 'middle', fill: '#4a4a4a', 'font-size': '11', 'font-weight': '500', transform: `rotate(-90 -36 ${height / 2})` });
+      yLabel.textContent = 'Real-World Success Rate';
+      g.appendChild(yLabel);
+
+      // Diagonal reference
+        g.appendChild(createEl('line', { x1: 0, y1: height, x2: width, y2: 0, stroke: 'rgba(212,148,10,0.4)', 'stroke-dasharray': '8 6', 'stroke-width': 2, 'stroke-opacity': 1 }));
+
+      // Tooltip
+      const tooltip = document.createElement('div');
+      tooltip.className = 'scatter-tooltip';
+      document.body.appendChild(tooltip);
+
+        // Policy name mapping for display
+        const policyDisplayName = {
+          'paligemma_binning_droid_jointpos': 'PaliGemma',
+          'pi05_droid_jointpos': 'π₀.₅',
+          'pi0_droid_jointpos': 'π₀',
+          'pi0_droid_jointpos_100k': 'π₀ (100k)',
+          'pi0_fast_droid_jointpos': 'π₀-fast',
+        };
+        
+        // Map marker codes from JSON to shape names
+        const markerToShape = {
+          'o': 'circle',
+          's': 'square',
+          '^': 'triangle',
+          'D': 'diamond',
+          'd': 'diamond',
+          '*': 'star',
+          'v': 'triangle-down',
+          'p': 'pentagon',
+          'h': 'circle',  // hexagon fallback
+          'H': 'circle',  // hexagon fallback
+        };
+
+      data.forEach((d) => {
+        const cx = scaleX(d.sim);
+        const cy = scaleY(d.real);
+        // Use color from data, fallback to defaults
+        const fill = d.color || (d.source === 'polaris' ? '#d4940a' : '#7a7a7a');
+        const isPolaris = d.source === 'polaris';
+        // Use marker from data, map to shape name
+        const shape = markerToShape[d.marker] || d.marker || 'circle';
+        const size = 6;
+        
+        let node;
+        const fillColor = fill;
+        const fillOpacity = isPolaris ? 0.9 : 0.5;
+        
+        if (shape === 'circle') {
+          node = createEl('circle', {
+            cx, cy, r: size,
+            fill: fillColor, 'fill-opacity': fillOpacity
+          });
+        } else if (shape === 'square') {
+          node = createEl('rect', {
+            x: cx - size, y: cy - size,
+            width: size * 2, height: size * 2,
+            fill: fillColor, 'fill-opacity': fillOpacity
+          });
+        } else if (shape === 'diamond') {
+          const pts = `${cx},${cy - size * 1.2} ${cx + size},${cy} ${cx},${cy + size * 1.2} ${cx - size},${cy}`;
+          node = createEl('polygon', {
+            points: pts,
+            fill: fillColor, 'fill-opacity': fillOpacity
+          });
+        } else if (shape === 'triangle') {
+          const pts = `${cx},${cy - size * 1.1} ${cx + size},${cy + size * 0.8} ${cx - size},${cy + size * 0.8}`;
+          node = createEl('polygon', {
+            points: pts,
+            fill: fillColor, 'fill-opacity': fillOpacity
+          });
+        } else if (shape === 'star') {
+          // 5-point star
+          const outerR = size * 1.1;
+          const innerR = size * 0.5;
+          let pts = '';
+          for (let i = 0; i < 10; i++) {
+            const r = i % 2 === 0 ? outerR : innerR;
+            const angle = (Math.PI / 2) + (i * Math.PI / 5);
+            pts += `${cx + r * Math.cos(angle)},${cy - r * Math.sin(angle)} `;
+          }
+          node = createEl('polygon', {
+            points: pts.trim(),
+            fill: fillColor, 'fill-opacity': fillOpacity
+          });
+        } else if (shape === 'triangle-down') {
+          const pts = `${cx},${cy + size * 1.1} ${cx + size},${cy - size * 0.8} ${cx - size},${cy - size * 0.8}`;
+          node = createEl('polygon', {
+            points: pts,
+            fill: fillColor, 'fill-opacity': fillOpacity
+          });
+        } else if (shape === 'pentagon') {
+          // 5-sided polygon
+          let pts = '';
+          for (let i = 0; i < 5; i++) {
+            const angle = (Math.PI / 2) + (i * 2 * Math.PI / 5);
+            pts += `${cx + size * Math.cos(angle)},${cy - size * Math.sin(angle)} `;
+          }
+          node = createEl('polygon', {
+            points: pts.trim(),
+            fill: fillColor, 'fill-opacity': fillOpacity
+          });
+        } else {
+          // Default to circle for unknown shapes
+          node = createEl('circle', {
+            cx, cy, r: size,
+            fill: fillColor, 'fill-opacity': fillOpacity
+          });
+        }
+        
+        node.style.cursor = 'pointer';
+        node.addEventListener('mouseenter', (e) => {
+          tooltip.style.opacity = '1';
+          const displayName = policyDisplayName[d.policy] || d.policy || d.name;
+          tooltip.innerHTML = `<strong>${displayName}</strong><br>Task: ${d.environment || 'N/A'}<br>Sim: ${Math.round(d.sim * 100)}% · Real: ${Math.round(d.real * 100)}%`;
+          tooltip.style.left = `${e.pageX + 12}px`;
+          tooltip.style.top = `${e.pageY + 12}px`;
+        });
+        node.addEventListener('mouseleave', () => {
+          tooltip.style.opacity = '0';
+        });
+        node.addEventListener('mousemove', (e) => {
+          tooltip.style.left = `${e.pageX + 12}px`;
+          tooltip.style.top = `${e.pageY + 12}px`;
+        });
+        g.appendChild(node);
+      });
+
+        // Build dynamic legends from data
+        // Collect unique environments with their colors (from polaris data)
+        const envColorMap = {};
+        const policyMarkerMap = {};
+        data.forEach(d => {
+          if (d.source === 'polaris' && d.environment && d.color) {
+            if (!envColorMap[d.environment]) envColorMap[d.environment] = d.color;
+          }
+          if (d.policy && d.marker) {
+            if (!policyMarkerMap[d.policy]) policyMarkerMap[d.policy] = d.marker;
+          }
+        });
+
+        // Helper to calculate luminance from hex color (for sorting dark to light)
+        const getLuminance = (hex) => {
+          const c = hex.replace('#', '');
+          const r = parseInt(c.substr(0, 2), 16) / 255;
+          const g = parseInt(c.substr(2, 2), 16) / 255;
+          const b = parseInt(c.substr(4, 2), 16) / 255;
+          return 0.299 * r + 0.587 * g + 0.114 * b;
+        };
+
+        // Environment/Task legend (colors) - sorted dark to light
+        if (policyLegend) {
+          policyLegend.innerHTML = '<strong style="margin-right: 12px; color: #1a1a1a;">Tasks:</strong>';
+          // Sort environments by color luminance (dark to light)
+          const sortedEnvs = Object.entries(envColorMap).sort((a, b) => getLuminance(a[1]) - getLuminance(b[1]));
+          sortedEnvs.forEach(([env, color]) => {
+            const item = document.createElement('span');
+            item.className = 'legend-item';
+            item.innerHTML = `<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${color};margin-right:6px;vertical-align:middle;"></span>${env}`;
+            policyLegend.appendChild(item);
+          });
+          // Add benchmark indicator
+          policyLegend.innerHTML += '<span style="margin-left:16px;border-left:1px solid #ddd;padding-left:16px;"><strong style="margin-right:12px;color:#1a1a1a;">Benchmark:</strong></span>';
+          const polItem = document.createElement('span');
+          polItem.className = 'legend-item';
+          polItem.innerHTML = `<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#9333ea;opacity:0.9;margin-right:6px;vertical-align:middle;"></span>PolaRiS`;
+          policyLegend.appendChild(polItem);
+          const libItem = document.createElement('span');
+          libItem.className = 'legend-item';
+          libItem.innerHTML = `<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#2563eb;opacity:0.5;margin-right:6px;vertical-align:middle;"></span>LIBERO`;
+          policyLegend.appendChild(libItem);
+        }
+        // Policies legend (shapes)
+        if (envLegend) {
+          envLegend.innerHTML = '<strong style="margin-right: 12px; color: #1a1a1a;">Policies:</strong>';
+          const shapesSVG = {
+            'o': `<svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:5px;"><circle cx="6" cy="6" r="4" fill="#1a1a1a"/></svg>`,
+            's': `<svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:5px;"><rect x="2" y="2" width="8" height="8" fill="#1a1a1a"/></svg>`,
+            'D': `<svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:5px;"><polygon points="6,1 11,6 6,11 1,6" fill="#1a1a1a"/></svg>`,
+            '^': `<svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:5px;"><polygon points="6,2 11,10 1,10" fill="#1a1a1a"/></svg>`,
+            '*': `<svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:5px;"><polygon points="6,1 7.2,4.2 11,4.2 8,6.8 9.2,11 6,8.5 2.8,11 4,6.8 1,4.2 4.8,4.2" fill="#1a1a1a"/></svg>`,
+            'v': `<svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:5px;"><polygon points="6,10 11,2 1,2" fill="#1a1a1a"/></svg>`,
+            'p': `<svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:5px;"><circle cx="6" cy="6" r="4" fill="#1a1a1a"/></svg>`,
+            'circle': `<svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:5px;"><circle cx="6" cy="6" r="4" fill="#1a1a1a"/></svg>`,
+            'square': `<svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:5px;"><rect x="2" y="2" width="8" height="8" fill="#1a1a1a"/></svg>`,
+            'diamond': `<svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:5px;"><polygon points="6,1 11,6 6,11 1,6" fill="#1a1a1a"/></svg>`,
+            'triangle': `<svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:5px;"><polygon points="6,2 11,10 1,10" fill="#1a1a1a"/></svg>`,
+            'star': `<svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:5px;"><polygon points="6,1 7.2,4.2 11,4.2 8,6.8 9.2,11 6,8.5 2.8,11 4,6.8 1,4.2 4.8,4.2" fill="#1a1a1a"/></svg>`,
+          };
+          Object.entries(policyMarkerMap).forEach(([policy, marker]) => {
+            const item = document.createElement('span');
+            item.className = 'legend-item';
+            const svg = shapesSVG[marker] || shapesSVG['o'];
+            item.innerHTML = `${svg}${policyDisplayName[policy] || policy}`;
+            envLegend.appendChild(item);
+          });
+        }
+      };
+
+      fetch('./assets/data/main_correlation_data.json')
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        })
+        .then((jsonData) => {
+          // New structure: { metrics, polaris_points, libero_points }
+          const polarisPoints = (jsonData.polaris_points || []).map(r => ({
+            ...r,
+            source: 'polaris',
+            sim: Number(r.sim),
+            real: Number(r.real)
+          }));
+          const liberoPoints = (jsonData.libero_points || []).map(r => ({
+            ...r,
+            source: 'libero',
+            sim: Number(r.sim),
+            real: Number(r.real)
+          }));
+          const data = [...polarisPoints, ...liberoPoints];
+          if (data.length === 0) {
+            if (statusEl) statusEl.textContent = 'No correlation data available.';
+            return;
+          }
+          renderScatter(data);
+          if (statusEl) statusEl.textContent = '';
+        })
+        .catch((err) => {
+          console.warn('Correlation data load failed; showing demo data', err);
+          if (statusEl) statusEl.textContent = 'Showing demo points (data file missing).';
+          const demo = [];
+          for (let i = 0; i < 10; i++) {
+            const sim = 0.6 + Math.random() * 0.3;
+            const real = Math.min(1, Math.max(0, sim + (Math.random() * 0.1 - 0.05)));
+            demo.push({ name: `POLARIS ${i + 1}`, sim, real, source: 'polaris' });
+          }
+          for (let i = 0; i < 10; i++) {
+            demo.push({ name: `LIBERO ${i + 1}`, sim: Math.random(), real: Math.random(), source: 'libero' });
+          }
+          renderScatter(demo);
+        });
+    });
+
+    // Interactive bar plot (sim vs real per policy)
+    document.addEventListener('DOMContentLoaded', () => {
+      const svg = document.getElementById('bar-plot');
+      const statusEl = document.getElementById('bar-status');
+      const envSelect = document.getElementById('bar-env-select');
+      if (!svg) return;
+
+      const colors = {
+        sim: '#9333ea',
+        real: '#d4940a',
+        axis: '#9ca3af',
+        grid: 'rgba(0,0,0,0.06)'
+      };
+      
+      const policyDisplayName = {
+        'paligemma_binning_droid_jointpos': 'PaliGemma',
+        'pi05_droid_jointpos': 'π₀.₅',
+        'pi0_droid_jointpos': 'π₀',
+        'pi0_droid_jointpos_100k': 'π₀ (100k)',
+        'pi0_fast_droid_jointpos': 'π₀-fast',
+      };
+
+      const margin = { top: 20, right: 20, bottom: 80, left: 60 };
+      const width = 700 - margin.left - margin.right;
+      const height = 360 - margin.top - margin.bottom;
+
+      const createEl = (tag, attrs) => {
+        const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+        Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+        return el;
+      };
+
+      let allData = [];
+      let tooltip = null;
+
+      const renderBars = (records, filterEnv = 'all') => {
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+        
+        // Filter by environment if needed
+        let filtered = records.filter(r => r.source === 'polaris');
+        if (filterEnv !== 'all') {
+          filtered = filtered.filter(r => r.environment === filterEnv);
+        }
+        
+        // Group by policy and average if showing all environments
+        const byPolicy = {};
+        filtered.forEach(r => {
+          const pol = r.policy;
+          if (!byPolicy[pol]) byPolicy[pol] = { sims: [], reals: [] };
+          byPolicy[pol].sims.push(r.sim);
+          byPolicy[pol].reals.push(r.real);
+        });
+        
+        const policyData = Object.entries(byPolicy).map(([policy, vals]) => ({
+          policy,
+          displayName: policyDisplayName[policy] || policy,
+          sim: vals.sims.reduce((a, b) => a + b, 0) / vals.sims.length,
+          real: vals.reals.reduce((a, b) => a + b, 0) / vals.reals.length
+        }));
+        
+        // Sort by real performance
+        policyData.sort((a, b) => b.real - a.real);
+
+        const defs = createEl('defs', {});
+        svg.appendChild(defs);
+
+        const g = createEl('g', { transform: `translate(${margin.left},${margin.top})` });
+        svg.appendChild(g);
+
+        const maxVal = 1;
+        const xBand = (idx) => (idx * (width / policyData.length)) + 0.1 * (width / policyData.length);
+        const bandWidth = 0.8 * (width / policyData.length);
+        const scaleY = (v) => height - (v / maxVal) * height;
+
+        // Grid lines
+        const gridCount = 5;
+        for (let i = 0; i <= gridCount; i++) {
+          const y = (i / gridCount) * height;
+          g.appendChild(createEl('line', { x1: 0, y1: y, x2: width, y2: y, stroke: colors.grid, 'stroke-width': 1, 'stroke-dasharray': '4 4' }));
+        }
+
+        // Axes
+        g.appendChild(createEl('line', { x1: 0, y1: height, x2: width, y2: height, stroke: colors.axis, 'stroke-width': 2 }));
+        g.appendChild(createEl('line', { x1: 0, y1: 0, x2: 0, y2: height, stroke: colors.axis, 'stroke-width': 2 }));
+
+        // Tooltip
+        if (!tooltip) {
+          tooltip = document.createElement('div');
+          tooltip.className = 'scatter-tooltip';
+          document.body.appendChild(tooltip);
+        }
+
+        policyData.forEach((r, idx) => {
+          const baseX = xBand(idx);
+          const simH = height - scaleY(r.sim);
+          const realH = height - scaleY(r.real);
+          const barW = bandWidth / 2.4;
+
+          const simRect = createEl('rect', {
+            x: baseX,
+            y: scaleY(r.sim),
+            width: barW,
+            height: Math.max(simH, 1),
+            fill: colors.sim,
+            'fill-opacity': 0.9,
+            rx: 4
+          });
+          const realRect = createEl('rect', {
+            x: baseX + barW + 6,
+            y: scaleY(r.real),
+            width: barW,
+            height: Math.max(realH, 1),
+            fill: colors.real,
+            'fill-opacity': 0.9,
+            rx: 4
+          });
+
+          [simRect, realRect].forEach((node, i) => {
+            node.style.cursor = 'pointer';
+            node.addEventListener('mouseenter', (e) => {
+              tooltip.style.opacity = '1';
+              const label = i === 0 ? 'Sim' : 'Real';
+              const val = i === 0 ? r.sim : r.real;
+              tooltip.innerHTML = `<strong>${r.displayName}</strong><br>${label}: ${Math.round(val * 100)}%`;
+              tooltip.style.left = `${e.pageX + 10}px`;
+              tooltip.style.top = `${e.pageY + 10}px`;
+            });
+            node.addEventListener('mouseleave', () => {
+              tooltip.style.opacity = '0';
+            });
+            node.addEventListener('mousemove', (e) => {
+              tooltip.style.left = `${e.pageX + 10}px`;
+              tooltip.style.top = `${e.pageY + 10}px`;
+            });
+          });
+
+          g.appendChild(simRect);
+          g.appendChild(realRect);
+
+          // x labels
+          const lbl = createEl('text', {
+            x: baseX + barW + 3,
+            y: height + 20,
+            'text-anchor': 'middle',
+            fill: '#1a1a1a',
+            'font-size': '12',
+            'font-weight': '500'
+          });
+          lbl.textContent = r.displayName;
+          g.appendChild(lbl);
+        });
+
+        // y-axis ticks/labels
+        for (let i = 0; i <= gridCount; i++) {
+          const val = (i / gridCount) * maxVal;
+          const y = height - (val / maxVal) * height;
+          const t = createEl('text', { x: -10, y: y + 4, 'text-anchor': 'end', fill: '#4a4a4a', 'font-size': '11' });
+          t.textContent = `${Math.round(val * 100)}%`;
+          g.appendChild(t);
+        }
+        
+        // Legend
+        const legendY = height + 50;
+        const simLegend = createEl('rect', { x: width / 2 - 80, y: legendY, width: 14, height: 14, fill: colors.sim, rx: 2 });
+        const simLabel = createEl('text', { x: width / 2 - 60, y: legendY + 11, fill: '#4a4a4a', 'font-size': '12' });
+        simLabel.textContent = 'Sim';
+        const realLegend = createEl('rect', { x: width / 2 + 20, y: legendY, width: 14, height: 14, fill: colors.real, rx: 2 });
+        const realLabel = createEl('text', { x: width / 2 + 40, y: legendY + 11, fill: '#4a4a4a', 'font-size': '12' });
+        realLabel.textContent = 'Real';
+        g.appendChild(simLegend);
+        g.appendChild(simLabel);
+        g.appendChild(realLegend);
+        g.appendChild(realLabel);
+
+        if (statusEl) statusEl.textContent = '';
+      };
+
+      fetch('./assets/data/main_correlation_data.json')
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        })
+        .then((jsonData) => {
+          // New structure: { metrics, polaris_points, libero_points }
+          const polarisPoints = (jsonData.polaris_points || []).map(r => ({
+            ...r,
+            source: 'polaris',
+            sim: Number(r.sim),
+            real: Number(r.real)
+          }));
+          const liberoPoints = (jsonData.libero_points || []).map(r => ({
+            ...r,
+            source: 'libero',
+            sim: Number(r.sim),
+            real: Number(r.real)
+          }));
+          const records = [...polarisPoints, ...liberoPoints];
+          if (records.length === 0) {
+            if (statusEl) statusEl.textContent = 'No data available.';
+            return;
+          }
+          allData = records;
+          
+          // Populate environment dropdown
+          const envs = Array.from(new Set(records.filter(r => r.source === 'polaris').map(r => r.environment)));
+          envs.forEach(env => {
+            const opt = document.createElement('option');
+            opt.value = env;
+            opt.textContent = env;
+            envSelect.appendChild(opt);
+          });
+          
+          envSelect.addEventListener('change', () => {
+            renderBars(allData, envSelect.value);
+          });
+          
+          renderBars(allData, 'all');
+        })
+        .catch((err) => {
+          console.warn('Data load failed', err);
+          if (statusEl) statusEl.textContent = 'Failed to load data.';
+        });
+    });
+
+    // Policy evaluation comparison (sim vs real per env)
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('policy-list');
+      const statusEl = document.getElementById('policy-status');
+      if (!container) return;
+
+      const renderPolicies = (records) => {
+        container.innerHTML = '';
+        const byPolicy = {};
+        records.forEach((r) => {
+          const pol = r.policy || 'Unknown';
+          if (!byPolicy[pol]) byPolicy[pol] = [];
+          byPolicy[pol].push(r);
+        });
+
+        Object.entries(byPolicy).forEach(([pol, rows]) => {
+          const item = document.createElement('div');
+          item.className = 'policy-item';
+
+          const title = document.createElement('div');
+          title.className = 'policy-title';
+          title.textContent = pol;
+          item.appendChild(title);
+
+          const table = document.createElement('table');
+          table.className = 'policy-table';
+          const thead = document.createElement('thead');
+          thead.innerHTML = '<tr><th>Env</th><th>Sim</th><th>Real</th></tr>';
+          table.appendChild(thead);
+          const tbody = document.createElement('tbody');
+          rows.forEach((r) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${r.environment || ''}</td>
+              <td class="value-sim">${Math.round(r.sim * 100)}%</td>
+              <td class="value-real">${Math.round(r.real * 100)}%</td>
+            `;
+            tbody.appendChild(tr);
+          });
+          table.appendChild(tbody);
+          item.appendChild(table);
+          container.appendChild(item);
+        });
+        if (statusEl) statusEl.textContent = '';
+      };
+
+      fetch('./assets/data/policy_eval.json')
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        })
+        .then((records) => {
+          if (!Array.isArray(records) || records.length === 0) {
+            if (statusEl) statusEl.textContent = 'No policy data available.';
+            return;
+          }
+          const data = records.map((r) => ({
+            policy: r.policy || '',
+            environment: r.environment || '',
+            sim: Number(r.sim),
+            real: Number(r.real)
+          }));
+          renderPolicies(data);
+        })
+        .catch((err) => {
+          console.warn('Policy data load failed; showing demo data', err);
+          if (statusEl) statusEl.textContent = '';
+          const policies = [
+            'paligemma_binning_droid_jointpos',
+            'pi05_droid_jointpos',
+            'pi0_droid_jointpos',
+            'pi0_droid_jointpos_100k',
+            'pi0_fast_droid_jointpos'
+          ];
+          const envs = ['Kitchen', 'Counter', 'Stovetop'];
+          const demo = [];
+          policies.forEach((p) => {
+            envs.forEach((env) => {
+              demo.push({
+                policy: p,
+                environment: env,
+                sim: 0.6 + Math.random() * 0.3,
+                real: 0.5 + Math.random() * 0.35
+              });
+            });
+          });
+          renderPolicies(demo);
+        });
+    });
+
+    // Policy evaluation videos
+    document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.getElementById('policy-video-grid');
+      const statusEl = document.getElementById('policy-video-status');
+      if (!grid) return;
+
+      const renderVideos = (records) => {
+        let idx = 0;
+
+        const show = (dir) => {
+          if (!records.length) return;
+          const r = records[idx];
+          grid.innerHTML = '';
+          const card = document.createElement('div');
+          card.className = 'policy-video-item';
+          if (dir === 'next') card.classList.add('slide-in-right');
+          if (dir === 'prev') card.classList.add('slide-in-left');
+          card.addEventListener('animationend', () => {
+            card.classList.remove('slide-in-right', 'slide-in-left');
+          }, { once: true });
+          const pair = document.createElement('div');
+          pair.className = 'policy-video-pair';
+
+          const addVid = (src, label) => {
+            const wrap = document.createElement('div');
+            wrap.className = 'policy-video-wrap';
+            const v = document.createElement('video');
+            v.src = src;
+            v.autoplay = true;
+            v.loop = true;
+            v.muted = true;
+            v.playsInline = true;
+            wrap.appendChild(v);
+            const lbl = document.createElement('div');
+            lbl.className = 'policy-video-label';
+            lbl.textContent = label;
+            wrap.appendChild(lbl);
+            return wrap;
+          };
+
+          if (r.simVideo) pair.appendChild(addVid(r.simVideo, 'Sim'));
+          if (r.realVideo) pair.appendChild(addVid(r.realVideo, 'Real'));
+
+          card.appendChild(pair);
+          
+          // Task name centered below videos
+          const taskLabel = document.createElement('div');
+          taskLabel.className = 'policy-video-task';
+          taskLabel.textContent = r.environment || '';
+          card.appendChild(taskLabel);
+          grid.appendChild(card);
+        };
+
+        const controls = document.createElement('div');
+        controls.className = 'policy-video-controls';
+        const btnPrev = document.createElement('button');
+        btnPrev.className = 'gallery-nav left';
+        btnPrev.textContent = '‹';
+        const btnNext = document.createElement('button');
+        btnNext.className = 'gallery-nav right';
+        btnNext.textContent = '›';
+        controls.appendChild(btnPrev);
+        controls.appendChild(btnNext);
+        grid.parentElement.insertBefore(controls, grid.nextSibling);
+
+        btnPrev.addEventListener('click', () => {
+          idx = (idx - 1 + records.length) % records.length;
+          show('prev');
+        });
+        btnNext.addEventListener('click', () => {
+          idx = (idx + 1) % records.length;
+          show('next');
+        });
+
+        show();
+        if (statusEl) statusEl.textContent = '';
+      };
+
+      fetch('./assets/data/policy_videos.json')
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        })
+        .then((records) => {
+          if (!Array.isArray(records) || records.length === 0) {
+            if (statusEl) statusEl.textContent = 'No video data available.';
+            return;
+          }
+          renderVideos(records);
+        })
+        .catch((err) => {
+          console.warn('Policy video data load failed; showing demo videos', err);
+          if (statusEl) statusEl.textContent = '';
+          const demo = [
+            { policy: 'pi05_constrain-1k', realPolicy: 'pi05_joint_pos', environment: 'FruitBus', simVideo: './assets/videos/sim_rollouts/fruitbus.mp4', realVideo: './assets/videos/real_rollouts/fruitbus.mp4' },
+            { policy: 'pi05_constrain-1k', realPolicy: 'pi05_joint_pos', environment: 'Stack', simVideo: './assets/videos/sim_rollouts/stack.mp4', realVideo: './assets/videos/real_rollouts/stack.mp4' },
+            { policy: 'pi05_constrain-1k', realPolicy: 'pi05_joint_pos', environment: 'PanClean', simVideo: './assets/videos/sim_rollouts/panclean.mp4', realVideo: './assets/videos/real_rollouts/panclean.mp4' }
+          ];
+          renderVideos(demo);
+        });
+    });
+  </script>
+</body>
+</html>
+

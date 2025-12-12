@@ -1,0 +1,8 @@
+[
+  { "policy": "pi05_contrain-1k", "environment": "Food Bussing", "simVideo": "./assets/videos/sim_rollouts/fruitbus.mp4", "realVideo": "./assets/videos/real_rollouts/fruitbus.mp4", "realPolicy": "pi05_joint_pos" },
+  { "policy": "pi05_contrain-1k", "environment": "Block Stacking", "simVideo": "./assets/videos/sim_rollouts/stack.mp4", "realVideo": "./assets/videos/real_rollouts/stack.mp4", "realPolicy": "pi05_joint_pos" },
+  { "policy": "pi05_contrain-1k", "environment": "Pan Cleaning", "simVideo": "./assets/videos/sim_rollouts/panclean.mp4", "realVideo": "./assets/videos/real_rollouts/panclean.mp4", "realPolicy": "pi05_joint_pos" },
+  { "policy": "pi05_contrain-1k", "environment": "Move Latte Cup", "simVideo": "./assets/videos/sim_rollouts/latte-cup.mp4", "realVideo": "./assets/videos/real_rollouts/lattecup.mp4", "realPolicy": "pi05_joint_pos" },
+  { "policy": "pi05_contrain-1k", "environment": "Organize Tools", "simVideo": "./assets/videos/sim_rollouts/organize-tools.mp4", "realVideo": "./assets/videos/real_rollouts/scissor.mp4", "realPolicy": "pi05_joint_pos" },
+  { "policy": "pi05_contrain-1k", "environment": "Tape Into Container", "simVideo": "./assets/videos/sim_rollouts/tape-into-container.mp4", "realVideo": "./assets/videos/real_rollouts/tape.mp4", "realPolicy": "pi05_joint_pos" }
+]
