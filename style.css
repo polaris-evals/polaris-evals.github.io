@@ -589,6 +589,10 @@ img {
   margin-right: 0;
 }
 
+.teaser-image {
+  border: 3px solid var(--border-light) !important;
+}
+
 /* Figure Links */
 a#figure-1-img,
 a#figure-2-img,
@@ -781,17 +785,13 @@ a#figure-3-img img {
   width: 100%;
   border-radius: 14px;
   margin-top: 18px;
-  max-height: 0;
-  opacity: 0;
+  height: 220px;
+  max-height: 220px;
+  opacity: 1;
+  display: block;
   object-fit: cover;
   transition: max-height 0.4s ease, opacity 0.35s ease;
   box-shadow: var(--shadow-sm);
-}
-
-.tldr-card:hover .tldr-video,
-.tldr-card:focus-within .tldr-video {
-  max-height: 220px;
-  opacity: 1;
 }
 
 .tldr-label {
