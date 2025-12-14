@@ -6,8 +6,15 @@
   <title>PolaRiS</title>
   <link rel="icon" href="./figs/logo.png" type="image/png">
   <link rel="stylesheet" href="style.css">
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
   <script>
     window.MathJax = {
       tex: {
@@ -226,41 +233,65 @@
       </div>
     </div>
 
-    <div class="card-surface mesh-viewer">
-      <div class="mesh-header">
-        <div>
-          <div class="section-heading">Interact with mesh generation</div>
-          <p class="section-lead">Preview TRELLIS-generated object meshes; switch objects and orbit the assets.</p>
-      </div>
-        <label class="mesh-selector">
-          <span>Select object</span>
-          <select id="meshSelect">
-            <option value="cleaner">Cleaner</option>
-            <option value="coke">Coke</option>
-            <option value="electricdrill">Electric Drill</option>
-            <option value="pot">Pot</option>
-            <option value="scissor">Scissor</option>
-            <option value="spoon">Spoon</option>
-          </select>
-        </label>
-      </div>
+    <div class="card-surface reconstruction-split-section">
+      <div class="section-heading">Interactive Reconstruction Viewer</div>
+      <p class="section-lead">Explore Gaussian Splat reconstructions and TRELLIS-generated object meshes side by side.</p>
 
-      <div class="mesh-active-label">Showing: <span id="meshActiveName">Cleaner</span></div>
-
-      <div class="mesh-columns">
-        <div class="mesh-col mesh-media">
-          <div class="mesh-col-title">Object Scan</div>
-          <video id="meshVideo" class="mesh-video" playsinline muted loop controls></video>
-          <div class="mesh-note" id="meshVideoNote"></div>
+      <div class="reconstruction-split-container">
+        <!-- Left: Gaussian Splat Viewer -->
+        <div class="reconstruction-half gsplat-half">
+          <div class="reconstruction-half-header">
+            <div class="reconstruction-half-title">Gaussian Splat Viewer</div>
+            <label class="mesh-selector">
+              <span>Select scene</span>
+              <select id="gsplatSelect">
+                <option value="stovetop">Stovetop</option>
+                <option value="kitchen_tabletop">Kitchen Tabletop</option>
+              </select>
+            </label>
+          </div>
+          <div class="gsplat-active-label">Showing: <span id="gsplatActiveName">Scene</span></div>
+          <div id="gsplatContainer" class="gsplat-viewer-container">
+            <div class="gsplat-controls">
+              <span class="gsplat-hint">Click and drag to rotate • Scroll to zoom</span>
+            </div>
+            <div class="gsplat-loading" id="gsplatLoading">Loading scene...</div>
+          </div>
         </div>
-        <div class="mesh-col">
-          <div class="mesh-col-title">Object Mesh</div>
-          <model-viewer id="meshRaw" class="mesh-viewer-frame" alt="TRELLIS visual mesh" loading="lazy"
-            camera-controls auto-rotate rotation-per-second="30deg" camera-orbit="auto auto 600%"
-            min-camera-orbit="auto auto 200%" max-camera-orbit="auto auto 1000%" field-of-view="85deg"
-            exposure="1" shadow-intensity="0.4" src="./assets/trellis/mesh_cleaner.glb">
-          </model-viewer>
-      </div>
+
+        <!-- Right: Mesh Generation (existing TRELLIS viewer) -->
+        <div class="reconstruction-half mesh-half">
+          <div class="reconstruction-half-header">
+            <div class="reconstruction-half-title">Object Mesh Generation</div>
+            <label class="mesh-selector">
+              <span>Select object</span>
+              <select id="meshSelect">
+                <option value="cleaner">Cleaner</option>
+                <option value="coke">Coke</option>
+                <option value="electricdrill">Electric Drill</option>
+                <option value="pot">Pot</option>
+                <option value="scissor">Scissor</option>
+                <option value="spoon">Spoon</option>
+              </select>
+            </label>
+          </div>
+          <div class="mesh-active-label">Showing: <span id="meshActiveName">Cleaner</span></div>
+          <div class="mesh-columns-vertical">
+            <div class="mesh-col mesh-media">
+              <div class="mesh-col-title">Object Scan</div>
+              <video id="meshVideo" class="mesh-video" playsinline muted loop controls></video>
+              <div class="mesh-note" id="meshVideoNote"></div>
+            </div>
+            <div class="mesh-col">
+              <div class="mesh-col-title">Object Mesh</div>
+              <model-viewer id="meshRaw" class="mesh-viewer-frame" alt="TRELLIS visual mesh" loading="lazy"
+                camera-controls auto-rotate rotation-per-second="30deg" camera-orbit="auto auto 600%"
+                min-camera-orbit="auto auto 200%" max-camera-orbit="auto auto 1000%" field-of-view="85deg"
+                exposure="1" shadow-intensity="0.4" src="./assets/trellis/mesh_cleaner.glb">
+              </model-viewer>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -327,7 +358,7 @@
       <div class="cotrain-split">
         <div class="cotrain-left">
           <div class="cotrain-section-title">Data Mix Ablation</div>
-          <p class="cotrain-section-lead">Increasing simulation data in co-training improves correlation.</p>
+          <p class="cotrain-section-lead">Including simulation data in co-training improves correlation.</p>
           <div class="cotrain-barplot-container">
             <svg id="cotrain-bar" viewBox="0 0 400 310" role="img" aria-label="Co-training data mix ablation"></svg>
           </div>
@@ -575,6 +606,120 @@
       select?.addEventListener('change', (e) => setMesh(e.target.value));
       setMesh(select?.value || 'cleaner');
     });
+
+    // Gaussian Splat Viewer using @mkkellogg/gaussian-splats-3d
+    (async function() {
+      const gsplatSelect = document.getElementById('gsplatSelect');
+      const gsplatActiveName = document.getElementById('gsplatActiveName');
+      const gsplatContainer = document.getElementById('gsplatContainer');
+      const gsplatLoading = document.getElementById('gsplatLoading');
+
+      if (!gsplatContainer) return;
+
+      // Scene configurations - customize camera for each scene
+      const scenes = {
+        stovetop: {
+          label: 'Stovetop',
+          file: './assets/splats/stovetop.splat',
+          // Camera settings
+          cameraUp: [0, -1, 0],                    // Up direction
+          cameraPosition: [3, -3, 8],              // Camera position [x, y, z]
+          cameraLookAt: [0, 0, 0],                 // Look at point [x, y, z]
+          // Scene transform (optional)
+          position: [0, 0, 0],                     // Scene offset [x, y, z]
+          rotation: [ 0, 0.7071068, -0.7071068, 0 ],                  // Rotation quaternion [x, y, z, w]
+          // rotation: [0, 0, 0, 1],                  // Rotation quaternion [x, y, z, w]
+          scale: [1, 1, 1]                         // Scale [x, y, z]
+        },
+        kitchen_tabletop: {
+          label: 'Kitchen Tabletop',
+          file: './assets/splats/kitchen_table.splat',
+          cameraUp: [0, 1, 0],
+          cameraPosition: [2, 2, 2],
+          cameraLookAt: [0, 0, 0],
+          position: [0, 0, 0],
+          rotation: [ -0.7071068, 0, 0, 0.7071068 ],
+          scale: [1, 1, 1]
+        }
+        // Add more scenes here:
+        // kitchen: {
+        //   label: 'Kitchen',
+        //   file: './assets/splats/kitchen.ply',
+        //   cameraUp: [0, 1, 0],
+        //   cameraPosition: [2, 1, 4],
+        //   cameraLookAt: [0, 0, 0],
+        //   position: [0, 0, 0],
+        //   rotation: [0, 0, 0, 1],
+        //   scale: [1, 1, 1]
+        // }
+      };
+
+      let viewer = null;
+      let GaussianSplats3D = null;
+
+      const loadScene = async (sceneKey) => {
+        const scene = scenes[sceneKey];
+        if (!scene) return;
+
+        gsplatLoading.textContent = 'Initializing viewer...';
+        gsplatLoading.classList.remove('hidden');
+
+        // Clean up previous viewer
+        if (viewer) {
+          viewer.dispose();
+          viewer = null;
+          // Remove old canvas
+          const oldCanvas = gsplatContainer.querySelector('canvas');
+          if (oldCanvas) oldCanvas.remove();
+        }
+
+        try {
+          // Import library if not loaded
+          if (!GaussianSplats3D) {
+            GaussianSplats3D = await import('https://cdn.jsdelivr.net/npm/@mkkellogg/gaussian-splats-3d@0.4.6/build/gaussian-splats-3d.module.min.js');
+          }
+
+          // Create viewer with scene-specific camera settings
+          viewer = new GaussianSplats3D.Viewer({
+            cameraUp: scene.cameraUp || [0, -1, 0],
+            initialCameraPosition: scene.cameraPosition || [0, -2, 6],
+            initialCameraLookAt: scene.cameraLookAt || [0, 0, 0],
+            rootElement: gsplatContainer,
+            sharedMemoryForWorkers: false,
+            dynamicScene: false,
+            selfDrivenMode: true
+          });
+
+          gsplatLoading.textContent = 'Loading splats...';
+
+          // Load the scene with transform settings
+          await viewer.addSplatScene(scene.file, {
+            splatAlphaRemovalThreshold: 5,
+            showLoadingUI: false,
+            progressiveLoad: true,
+            position: scene.position || [0, 0, 0],
+            rotation: scene.rotation || [0, 0, 0, 1],
+            scale: scene.scale || [1, 1, 1]
+          });
+
+          viewer.start();
+          gsplatLoading.classList.add('hidden');
+          if (gsplatActiveName) gsplatActiveName.textContent = scene.label + ' (loaded)';
+
+        } catch (error) {
+          console.error('Viewer error:', error);
+          gsplatLoading.textContent = 'Error: ' + error.message;
+        }
+      };
+
+      // Handle scene selection
+      gsplatSelect?.addEventListener('change', (e) => {
+        loadScene(e.target.value);
+      });
+
+      // Load initial scene
+      loadScene(gsplatSelect?.value || 'splat');
+    })();
 
     // Simple interactive scatter backed by exported data (PolaRiS only)
     document.addEventListener('DOMContentLoaded', () => {
