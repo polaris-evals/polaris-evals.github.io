@@ -67,6 +67,12 @@
         </a>
       </div>
       -->
+      <div class="progress-item" data-section="resources">
+        <a href="#resources">
+          <span class="progress-dot"></span>
+          <span class="progress-label">Resources</span>
+        </a>
+      </div>
       <div class="progress-item" data-section="bibtex">
         <a href="#bibtex">
           <span class="progress-dot"></span>
@@ -144,7 +150,7 @@
       PolaRiS is a real-to-sim approach for constructing high-fidelity simulated environments for scalable evaluation. PolaRiS’s 3D Gaussian splatting–based framework quickly turns a short video of a real-world scene into a simulation environment. We use PolaRiS to create a diverse suite of simulated environments and demonstrate strong correlations to real-world evaluations for generalist robot policies.
     </p>
 
-    <div class="tagline">Real vs. Sim</div>
+    <!-- <div class="tagline">Real vs. Sim</div>
     <section class="slider-section card-surface" id="slider-comparison">
       <div class="section-heading">Interactive Slider Comparison</div>
       <p class="section-lead">Drag to reveal sim vs real. Use arrows to switch tasks.</p>
@@ -166,9 +172,9 @@
         </div>
       </div>
       <p class="figure-caption slider-caption"><b>PolaRiS</b> enables zero-shot evaluation in unseen simulation environments that correlates strongly with real-world performance.</p>
-    </section>
+    </section> -->
 
-    <div class="tagline" id="abstract">Abstract / TL;DR</div>
+    <!-- <div class="tagline" id="abstract">Abstract / TL;DR</div>
     <div class="section card-surface abstract-card" tabindex="0" aria-label="Hover or focus to read full abstract">
       <div class="abstract-teaser">
         <p>We introduce PolaRiS, a scalable real-to-sim framework for high-fidelity robot evaluation. PolaRiS turns short scans into interactive environments via 2D Gaussian Splatting, co-trains on a small number of sim episodes to bridge the visual gap, and provides accurate policy ranking without additional real rollouts.</p>
@@ -190,16 +196,16 @@
           <div class="tldr-label">Align</div>
           <p>Bridge the visual gap with a light co-training recipe on a few hundred simulated episodes.</p>
           place holder, idk what to put here yet
-          <!-- <video class="tldr-video" src="./train_in_sim/vid2_rl.mp4" autoplay muted loop playsinline></video> -->
+          <video class="tldr-video" src="./train_in_sim/vid2_rl.mp4" autoplay muted loop playsinline></video>
         </div>
         <div class="tldr-card" tabindex="0">
           <div class="tldr-label">Evaluate</div>
           <p>Rank policies accurately in sim—no additional real-world rollouts required.</p>
-          <!-- <video class="tldr-video" src="./fig/rankin." autoplay muted loop playsinline></video> -->
+          <video class="tldr-video" src="./fig/rankin." autoplay muted loop playsinline></video>
           <img src="./figs/ranking.png" alt="Policy ranking" class="tldr-image" />
         </div>
-      </div>
-    </div>
+      </div> 
+    </div> -->
 
     <div class="tagline" id="pipeline">The PolaRiS Pipeline: From Video to Eval</div>
     <div class="pipeline-grid card-surface">
@@ -258,168 +264,26 @@
       </div>
     </div>
 
-    <div class="tagline" id="co-training">Key Insight: Simulation Data Co-Training</div>
-
-    <div class="co-gallery card-surface">
-      <div class="section-heading">Simulation Data Co-Training Gallery</div>
-      <p class="section-lead">Diverse simulated rollouts used for visual alignment: varying lighting, viewpoints, and object configurations.</p>
-      <div class="co-gallery-grid">
-        <div class="co-gallery-card">
-          <video src="./assets/videos/cotrain/workbench_zed_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
-          <div class="co-caption">Workbench zed</div>
-        </div>
-        <div class="co-gallery-card">
-          <video src="./assets/videos/cotrain/vention_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
-          <div class="co-caption">Vention table</div>
-        </div>
-        <div class="co-gallery-card">
-          <video src="./assets/videos/cotrain/lobby_desk_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
-          <div class="co-caption">Lobby desk</div>
-        </div>
-        <div class="co-gallery-card">
-          <video src="./assets/videos/cotrain/kanav_maddox_table_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
-          <div class="co-caption">Maddox table</div>
-        </div>
-        <div class="co-gallery-card">
-          <video src="./assets/videos/cotrain/kanav_geodude_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
-          <div class="co-caption">Geodude setup</div>
-        </div>
-        <div class="co-gallery-card">
-          <video src="./assets/videos/cotrain/kanav_circle_table_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
-          <div class="co-caption">Circle table</div>
-        </div>
-        <div class="co-gallery-card">
-          <video src="./assets/videos/cotrain/kanav_black_table_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
-          <div class="co-caption">Black table</div>
-        </div>
-        <div class="co-gallery-card">
-          <video src="./assets/videos/cotrain/envs_05_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
-          <div class="co-caption">Env suite 05</div>
-        </div>
-        <div class="co-gallery-card">
-          <video src="./assets/videos/cotrain/envs_00_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
-          <div class="co-caption">Env suite 00</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card-surface correlation-callout">
-      <div class="section-heading">Real ↔ Sim correlation from co-training</div>
-      <p class="section-lead">Co-training tightens the slope and lowers variance between simulated rollouts and paired real executions.</p>
-      
-      <ul class="evidence-list" style="margin-bottom: 20px;">
-        <li>Correlation reported on unseen scenes after alignment.</li>
-      </ul>
-
-      <div class="side-by-side" style="margin-bottom: 24px;">
-        <div class="side-card">
-          <div class="side-label muted">No Co-training</div>
-          <video src="./assets/videos/cotrain_comparison/before_cotraining.mp4" autoplay muted loop playsinline></video>
-          <p>Raw real-to-sim transfer struggles with lighting and shadow shifts.</p>
-        </div>
-        <div class="side-card">
-          <div class="side-label accent">With Co-training</div>
-          <video src="./assets/videos/cotrain_comparison/after_cotraining.mp4" autoplay muted loop playsinline></video>
-          <p>Visual alignment restores task success in simulation.</p>
-        </div>
-      </div>
-
-      <div class="formulas-section" style="margin-top: 32px; margin-bottom: 32px; padding-top: 24px; border-top: 1px solid var(--border-subtle);">
-        <div style="margin-bottom: 28px;">
-          <h3 style="font-family: 'Space Grotesk', -apple-system, sans-serif; font-size: 18px; font-weight: 600; margin-bottom: 12px; color: var(--text-primary);">
-            <strong>(i) Pearson correlation coefficient ($r$):</strong>
-          </h3>
-          <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 12px;">
-            This measures the linear correlation between real and simulated performance:
-          </p>
-          <div style="background: var(--bg-elevated); padding: 20px; border-radius: 12px; border: 1px solid var(--border-subtle); margin: 12px 0; overflow-x: auto;">
-            \[
-            r(R, R_{\mathcal{S}}) = 
-            \frac{\sum_{i=1}^{N} (R_i - \bar{R})(R_{\mathcal{S}, i} - \bar{R}_{\mathcal{S}})}
-            {\sqrt{\sum_{i=1}^{N} (R_i - \bar{R})^2}\sqrt{\sum_{i=1}^{N} (R_{\mathcal{S}, i} - \bar{R}_{\mathcal{S}})^2}},
-            \]
-            <p style="margin-top: 12px; color: var(--text-muted); font-size: 12px; font-style: italic;">
-              where $\bar{R}$ and $\bar{R}_{\mathcal{S}}$ are the mean real and simulated scores.
-            </p>
-          </div>
-        </div>
-
-        <div>
-          <h3 style="font-family: 'Space Grotesk', -apple-system, sans-serif; font-size: 18px; font-weight: 600; margin-bottom: 12px; color: var(--text-primary);">
-            <strong>(ii) Mean Maximum Rank Violation (MMRV):</strong>
-          </h3>
-          <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 12px;">
-            This measures the average maximum rank ordering error between real and simulated performance:
-          </p>
-          <div style="background: var(--bg-elevated); padding: 20px; border-radius: 12px; border: 1px solid var(--border-subtle); margin: 12px 0; overflow-x: auto;">
-            \[
-            \mathrm{MMRV}(R, R_{\mathcal{S}}) = \frac{1}{N}\sum_{i=1}^{N} \max_{1 \le j \le N}
-            |R_i - R_j| \cdot \mathbf{1}\!\Big[
-                (R_{\mathcal{S}, i} < R_{\mathcal{S}, j}) 
-                \neq 
-                (R_i < R_j)
-            \Big].
-            \]
-          </div>
-        </div>
-      </div>
-
-      <div class="metric-grid">
-        <div class="metric-card">
-          <div class="metric-value">+0.64</div>
-          <div class="metric-label">Pearson boost</div>
-          <p>Improvement in Pearson correlation from co-training vs. zero-shot transfer.</p>
-        </div>
-        <div class="metric-card">
-          <div class="metric-value">−0.22</div>
-          <div class="metric-label">MMRV drop</div>
-          <p>Reduction in Mean Maximum Rank Violation from co-training vs. zero-shot.</p>
-        </div>
-        <div class="metric-card">
-          <div class="metric-value">326</div>
-          <div class="metric-label">sim episodes</div>
-          <p>Lightweight co-training budget used to close the visual gap.</p>
-        </div>
-      </div>
-
-      <div class="data-mix-card" style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border-subtle);">
-        <h3 style="font-family: 'Space Grotesk', -apple-system, sans-serif; font-size: 18px; font-weight: 600; margin-bottom: 12px; color: var(--text-primary);">
-          Co-training Ablation: Data Mix Impact
-        </h3>
-        <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
-          Increasing the proportion of simulation data in co-training improves both Pearson correlation (↑) and reduces MMRV (↓), demonstrating the effectiveness of visual alignment.
-        </p>
-        <div style="background: var(--bg-elevated); padding: 20px; border-radius: 16px; border: 1px solid var(--border-subtle);">
-          <img src="./figs/data_mix_pearson_r_and_mmrv.png" alt="Data mix ablation showing Pearson r and MMRV improvement with co-training" style="width: 100%; max-width: 800px; margin: 0 auto; display: block; border-radius: 12px; border: none; box-shadow: none;" />
-        </div>
-        <p style="margin-top: 12px; color: var(--text-muted); font-size: 12px; text-align: center; font-style: italic;">
-          Left: Pearson correlation increases with cotraining on simulation data. Right: MMRV decreases, indicating better rank preservation. Note: OOD means the simulation data
-          had no overlap with evaluation scenes, objects, or tasks. See paper for detailed on 
-          makeup of the OOD, Near Domain, and In Domain datasets. 
-        </p>
-      </div>
-    </div>
-
-    <div class="tagline" id="results">Results: Real-Sim Correlation, Policy Evaluation, and Ablations</div>
+    <div class="tagline" id="results">Results</div>
     <p class="section-note" style="text-align: center; color: var(--text-muted); font-size: 13px; margin: -8px 0 16px 0;">All performance metrics are based on normalized task progress scores, with 20 rollouts in real and 50 rollouts in sim per policy-task pair.</p>
     <div class="card-surface scatter-card">
-      <div class="section-heading">Correlation plot</div>
-      <p class="section-lead">Hover points to see paired sim/real success; higher correlation with co-training.</p>
-      <div class="stats-grid-inline">
-        <div class="stat-card">
-          <div class="stat-number">Pearson r = 0.78</div>
-          <p>Strong sim↔real correlation (higher is better)</p>
+      <div class="section-heading">Real-Sim Correlation</div>
+      <p class="section-lead">PolaRiS evaluations correlate strongly with real-world performance.</p>
+
+      <div class="correlation-split">
+        <div class="correlation-left">
+          <svg id="corr-scatter" viewBox="0 0 400 320" role="img" aria-label="Simulation vs Real success scatter"></svg>
+          <div class="scatter-status" id="scatter-status"></div>
         </div>
-        <div class="stat-card">
-          <div class="stat-number">MMRV = 0.06</div>
-          <p>Mean Maximum Rank Violation (lower is better)</p>
+        <div class="correlation-right">
+          <svg id="comparison-bar" viewBox="0 0 500 320" role="img" aria-label="PolaRiS vs LIBERO comparison"></svg>
         </div>
       </div>
-      <svg id="corr-scatter" viewBox="0 0 520 320" role="img" aria-label="Simulation vs Real success scatter"></svg>
-      <div class="scatter-hint">Hover any point for details. Solid = PolaRiS, faded = LIBERO baseline.</div>
-      <div class="scatter-status" id="scatter-status">Loading results…</div>
-      <div class="scatter-legend" id="policy-legend"></div>
-      <div class="scatter-legend" id="env-legend"></div>
+      <div class="correlation-legend-shared">
+        <div class="scatter-legend" id="benchmark-legend"></div>
+        <div class="scatter-legend" id="task-legend"></div>
+        <div class="scatter-legend" id="policy-legend"></div>
+      </div>
 
       <div class="roboarena-section" style="margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border-subtle); display: flex; gap: 24px; align-items: flex-start;">
         <div class="roboarena-left" style="flex: 1;">
@@ -450,28 +314,6 @@
       </div>
     </div>
 
-    <div class="card-surface bar-card">
-      <div class="section-heading">Bar plot (Sim vs Real per Policy)</div>
-      <p class="section-lead">PolaRiS sim scores track real performance per policy; hover for exact values.</p>
-      <div style="margin-bottom: 12px;">
-        <label for="bar-env-select" style="font-size: 13px; color: var(--text-secondary); margin-right: 8px;">Filter by task:</label>
-        <select id="bar-env-select" style="padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border-subtle); background: var(--bg-elevated); font-size: 13px; cursor: pointer;">
-          <option value="all">All Tasks</option>
-        </select>
-      </div>
-      <div class="bar-plot-wrap">
-        <svg id="bar-plot" viewBox="0 0 700 360" role="img" aria-label="Simulation vs Real bar plot"></svg>
-      </div>
-      <div class="scatter-status" id="bar-status">Loading bar data…</div>
-    </div>
-
-    <div class="card-surface policy-card" id="policy-comparison">
-      <div class="section-heading">Policy Evaluation Comparison (Sim vs Real)</div>
-      <p class="section-lead">Side-by-side sim and real performance across environments for key policies.</p>
-      <div class="policy-list" id="policy-list"></div>
-      <div class="scatter-status" id="policy-status">Loading policy data…</div>
-    </div>
-
     <div class="card-surface video-card" id="policy-videos">
       <div class="section-heading">Evaluation Videos</div>
       <p class="section-lead">Sample rollouts for the same policies and environments.</p>
@@ -479,59 +321,62 @@
       <div class="scatter-status" id="policy-video-status">Loading videos…</div>
     </div>
 
-    <!-- Commented out for now - may revisit later
-    <div class="tagline" id="gallery">Diverse, Generatable Evaluation Scenes</div>
-    <div class="card-surface">
-      <p class="section-lead">All environments below were produced from short video scans; policies are evaluated zero-shot.</p>
-      <div class="gallery-grid">
-      <video src="./reconstruction/1.mp4" autoplay muted loop playsinline></video>
-      <video src="./reconstruction/4.mp4" autoplay muted loop playsinline></video>
-      <video src="./reconstruction/6.mp4" autoplay muted loop playsinline></video>
-      <video src="./reconstruction/7.mp4" autoplay muted loop playsinline></video>
-      <video src="./reconstruction/11.mp4" autoplay muted loop playsinline></video>
-      <video src="./reconstruction/13.mp4" autoplay muted loop playsinline></video>
-      <video src="./reconstruction/14.mp4" autoplay muted loop playsinline></video>
-      <video src="./traversing/1.mp4" autoplay muted loop playsinline></video>
-      <video src="./sitting/3.mp4" autoplay muted loop playsinline></video>
+    <div class="tagline" id="co-training">Key Insight: Simulation Data Co-Training</div>
+
+    <div class="card-surface cotrain-split-card">
+      <div class="cotrain-split">
+        <div class="cotrain-left">
+          <div class="cotrain-section-title">Data Mix Ablation</div>
+          <p class="cotrain-section-lead">Increasing simulation data in co-training improves correlation.</p>
+          <div class="cotrain-barplot-container">
+            <svg id="cotrain-bar" viewBox="0 0 400 310" role="img" aria-label="Co-training data mix ablation"></svg>
+          </div>
+        </div>
+        <div class="cotrain-right">
+          <div class="cotrain-section-title">Co-Training Samples</div>
+          <p class="cotrain-section-lead">Diverse simulated rollouts for visual alignment.</p>
+          <div class="cotrain-collage">
+            <video src="./assets/videos/cotrain/workbench_zed_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
+            <video src="./assets/videos/cotrain/vention_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
+            <video src="./assets/videos/cotrain/lobby_desk_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
+            <video src="./assets/videos/cotrain/kanav_maddox_table_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
+            <video src="./assets/videos/cotrain/kanav_geodude_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
+            <video src="./assets/videos/cotrain/kanav_circle_table_episode_0_images_merged.mp4" autoplay muted loop playsinline></video>
+          </div>
+        </div>
       </div>
     </div>
-    -->
 
-    <div class="card-surface" id="visual-fidelity" style="margin-top: 32px;">
-      <div class="section-heading">Visual Fidelity Ablation</div>
-      <p class="section-lead">Visual fidelity variants of the same scene.</p>
-      <div class="gallery-grid gallery-grid-labeled">
-        <div class="gallery-item">
-          <video src="./assets/videos/vidual_fidelity/splats.mp4" autoplay muted loop playsinline></video>
-          <div class="gallery-label">PolaRiS Rollout (Ours)</div>
+    <div class="tagline" id="resources">Resources</div>
+    <div class="card-surface resources-card">
+      <div class="resources-grid">
+        <div class="resource-item">
+          <div class="resource-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+            </svg>
+          </div>
+          <h3>Compose Environments</h3>
+          <p>An interactive tool for composing and configuring PolaRiS simulation environments from reconstructed scenes.</p>
+          <a href="https://polaris-evals.github.io/compose-environments/" target="_blank" class="resource-link">
+            Launch Tool
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 17L17 7M17 7H7M17 7V17"/>
+            </svg>
+          </a>
         </div>
-        <div class="gallery-item">
-          <video src="./assets/videos/vidual_fidelity/raytraced.mp4" autoplay muted loop playsinline></video>
-          <div class="gallery-label">Raytraced</div>
+        <div class="resource-item">
+          <div class="resource-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <h3>PolaRiS Hub</h3>
+          <p>Upload your own reconstructed environments to the PolaRiS Hub and contribute to the growing collection of evaluation scenes.</p>
+          <span class="resource-coming-soon">Coming Soon</span>
         </div>
-        <div class="gallery-item">
-          <video src="./assets/videos/vidual_fidelity/untextured_env.mp4" autoplay muted loop playsinline></video>
-          <div class="gallery-label">Untextured Background</div>
-        </div>
-        <div class="gallery-item">
-          <video src="./assets/videos/vidual_fidelity/untextured_everything.mp4" autoplay muted loop playsinline></video>
-          <div class="gallery-label">Untextured Everything</div>
-        </div>
-      </div>
-
-      <div class="visual-fidelity-results" style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border-subtle);">
-        <h3 style="font-family: 'Space Grotesk', -apple-system, sans-serif; font-size: 18px; font-weight: 600; margin-bottom: 12px; color: var(--text-primary);">
-          Visual Fidelity Impact on Correlation
-        </h3>
-        <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
-          Higher visual fidelity leads to stronger real-sim correlation. PolaRiS's Gaussian splatting approach achieves the best Pearson r and lowest MMRV compared to raytraced and untextured alternatives.
-        </p>
-        <div style="background: var(--bg-elevated); padding: 20px; border-radius: 16px; border: 1px solid var(--border-subtle);">
-          <img src="./figs/visual_fidelity_pearson_r_and_mmrv.png" alt="Visual fidelity ablation showing Pearson r and MMRV across rendering methods" style="width: 100%; max-width: 800px; margin: 0 auto; display: block; border-radius: 12px; border: none; box-shadow: none;" />
-        </div>
-        <p style="margin-top: 12px; color: var(--text-muted); font-size: 12px; text-align: center; font-style: italic;">
-          Left: Pearson correlation across visual fidelity levels. Right: MMRV comparison. Higher fidelity rendering improves policy evaluation accuracy.
-        </p>
       </div>
     </div>
 
@@ -565,6 +410,7 @@
         { id: 'co-training', el: document.getElementById('co-training') },
         { id: 'results', el: document.getElementById('results') },
         { id: 'gallery', el: document.getElementById('gallery') },
+        { id: 'resources', el: document.getElementById('resources') },
         { id: 'bibtex', el: document.getElementById('bibtex') }
       ].filter(s => s.el);
 
@@ -730,16 +576,17 @@
       setMesh(select?.value || 'cleaner');
     });
 
-    // Simple interactive scatter backed by exported data (PolaRiS vs LIBERO)
+    // Simple interactive scatter backed by exported data (PolaRiS only)
     document.addEventListener('DOMContentLoaded', () => {
       const svg = document.getElementById('corr-scatter');
       const statusEl = document.getElementById('scatter-status');
+      const benchmarkLegend = document.getElementById('benchmark-legend');
+      const taskLegend = document.getElementById('task-legend');
       const policyLegend = document.getElementById('policy-legend');
-      const envLegend = document.getElementById('env-legend');
       if (!svg) return;
 
       const margin = { top: 20, right: 20, bottom: 40, left: 50 };
-      const width = 520 - margin.left - margin.right;
+      const width = 400 - margin.left - margin.right;
       const height = 320 - margin.top - margin.bottom;
       const min = 0;
       const max = 1;
@@ -815,9 +662,9 @@
       data.forEach((d) => {
         const cx = scaleX(d.sim);
         const cy = scaleY(d.real);
-        // Use color from data, fallback to defaults
-        const fill = d.color || (d.source === 'polaris' ? '#d4940a' : '#7a7a7a');
+        // Use color from data for PolaRiS, use blue for LIBERO
         const isPolaris = d.source === 'polaris';
+        const fill = isPolaris ? (d.color || '#c026d3') : '#2563eb';
         // Use marker from data, map to shape name
         const shape = markerToShape[d.marker] || d.marker || 'circle';
         const size = 6;
@@ -928,31 +775,34 @@
           return 0.299 * r + 0.587 * g + 0.114 * b;
         };
 
-        // Environment/Task legend (colors) - sorted dark to light
-        if (policyLegend) {
-          policyLegend.innerHTML = '<strong style="margin-right: 12px; color: #1a1a1a;">Tasks:</strong>';
-          // Sort environments by color luminance (dark to light)
+        // Benchmark legend (first)
+        if (benchmarkLegend) {
+          benchmarkLegend.innerHTML = '<strong style="margin-right: 12px; color: #1a1a1a;">Benchmark:</strong>';
+          const polItem = document.createElement('span');
+          polItem.className = 'legend-item';
+          polItem.innerHTML = `<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#c026d3;opacity:0.9;margin-right:6px;vertical-align:middle;"></span>PolaRiS`;
+          benchmarkLegend.appendChild(polItem);
+          const libItem = document.createElement('span');
+          libItem.className = 'legend-item';
+          libItem.innerHTML = `<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#2563eb;opacity:0.5;margin-right:6px;vertical-align:middle;"></span>LIBERO`;
+          benchmarkLegend.appendChild(libItem);
+        }
+
+        // Task legend (colors) - sorted dark to light
+        if (taskLegend) {
+          taskLegend.innerHTML = '<strong style="margin-right: 12px; color: #1a1a1a;">Tasks:</strong>';
           const sortedEnvs = Object.entries(envColorMap).sort((a, b) => getLuminance(a[1]) - getLuminance(b[1]));
           sortedEnvs.forEach(([env, color]) => {
             const item = document.createElement('span');
             item.className = 'legend-item';
             item.innerHTML = `<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${color};margin-right:6px;vertical-align:middle;"></span>${env}`;
-            policyLegend.appendChild(item);
+            taskLegend.appendChild(item);
           });
-          // Add benchmark indicator
-          policyLegend.innerHTML += '<span style="margin-left:16px;border-left:1px solid #ddd;padding-left:16px;"><strong style="margin-right:12px;color:#1a1a1a;">Benchmark:</strong></span>';
-          const polItem = document.createElement('span');
-          polItem.className = 'legend-item';
-          polItem.innerHTML = `<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#9333ea;opacity:0.9;margin-right:6px;vertical-align:middle;"></span>PolaRiS`;
-          policyLegend.appendChild(polItem);
-          const libItem = document.createElement('span');
-          libItem.className = 'legend-item';
-          libItem.innerHTML = `<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#2563eb;opacity:0.5;margin-right:6px;vertical-align:middle;"></span>LIBERO`;
-          policyLegend.appendChild(libItem);
         }
+
         // Policies legend (shapes)
-        if (envLegend) {
-          envLegend.innerHTML = '<strong style="margin-right: 12px; color: #1a1a1a;">Policies:</strong>';
+        if (policyLegend) {
+          policyLegend.innerHTML = '<strong style="margin-right: 12px; color: #1a1a1a;">Policies:</strong>';
           const shapesSVG = {
             'o': `<svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:5px;"><circle cx="6" cy="6" r="4" fill="#1a1a1a"/></svg>`,
             's': `<svg width="12" height="12" viewBox="0 0 12 12" style="vertical-align:middle;margin-right:5px;"><rect x="2" y="2" width="8" height="8" fill="#1a1a1a"/></svg>`,
@@ -972,7 +822,7 @@
             item.className = 'legend-item';
             const svg = shapesSVG[marker] || shapesSVG['o'];
             item.innerHTML = `${svg}${policyDisplayName[policy] || policy}`;
-            envLegend.appendChild(item);
+            policyLegend.appendChild(item);
           });
         }
       };
@@ -983,7 +833,7 @@
           return res.json();
         })
         .then((jsonData) => {
-          // New structure: { metrics, polaris_points, libero_points }
+          // Show both PolaRiS and LIBERO points in scatter
           const polarisPoints = (jsonData.polaris_points || []).map(r => ({
             ...r,
             source: 'polaris',
@@ -1003,6 +853,7 @@
           }
           renderScatter(data);
           if (statusEl) statusEl.textContent = '';
+
         })
         .catch((err) => {
           console.warn('Correlation data load failed; showing demo data', err);
@@ -1017,6 +868,310 @@
             demo.push({ name: `LIBERO ${i + 1}`, sim: Math.random(), real: Math.random(), source: 'libero' });
           }
           renderScatter(demo);
+        });
+
+      // Fetch and render comparison bar chart from separate JSON
+      fetch('./assets/data/main_barplots_metrics.json')
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        })
+        .then((metricsData) => {
+          renderComparisonBar(metricsData);
+        })
+        .catch((err) => {
+          console.warn('Barplot metrics load failed', err);
+        });
+
+      // Render comparison bar chart (Pearson r and MMRV)
+      const renderComparisonBar = (metrics) => {
+        const barSvg = document.getElementById('comparison-bar');
+        if (!barSvg || !metrics) return;
+
+        while (barSvg.firstChild) barSvg.removeChild(barSvg.firstChild);
+
+        // Larger dimensions for 6 benchmarks with negative values
+        const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+        const w = 500 - margin.left - margin.right;
+        const h = 320 - margin.top - margin.bottom;
+
+        const g = createEl('g', { transform: `translate(${margin.left},${margin.top})` });
+        barSvg.appendChild(g);
+
+        // Convert metrics object to array
+        const benchmarks = Object.entries(metrics)
+          .map(([name, values]) => ({
+            name,
+            pearson: values.pearson,
+            mmrv: values.mmrv
+          }));
+
+        // Colors for each benchmark - distinct colors (LIBERO 10k matches correlation scatter)
+        const benchmarkColors = {
+          'PolaRiS': '#c026d3',
+          'LIBERO 1k': '#f59e0b',
+          'LIBERO 10k': '#2563eb',
+          'LIBERO 50k': '#10b981',
+          'MSE (Train)': '#ef4444',
+          'MSE (Val)': '#f97316'
+        };
+
+        // Two groups: Pearson r (higher is better), MMRV (lower is better)
+        const groups = ['Pearson r ↑', 'MMRV ↓'];
+        const groupWidth = w / 2;
+        const numBars = benchmarks.length;
+        const barWidth = 28;
+        const barGap = 6;
+        const totalBarSpace = numBars * barWidth + (numBars - 1) * barGap;
+
+        // Scales
+        const pearsonMin = -0.6;
+        const pearsonMax = 1;
+        const mmrvMax = 0.5;
+
+        // Background grid
+        for (let i = 1; i < 5; i++) {
+          const gy = (i / 5) * h;
+          g.appendChild(createEl('line', { x1: 0, y1: gy, x2: w, y2: gy, stroke: 'rgba(0,0,0,0.06)', 'stroke-width': 1, 'stroke-dasharray': '4 4' }));
+        }
+
+        // Axes
+        g.appendChild(createEl('line', { x1: 0, y1: h, x2: w, y2: h, stroke: '#9ca3af', 'stroke-width': 2 }));
+        g.appendChild(createEl('line', { x1: 0, y1: 0, x2: 0, y2: h, stroke: '#9ca3af', 'stroke-width': 2 }));
+
+        groups.forEach((label, gi) => {
+          const groupCenterX = gi * groupWidth + groupWidth / 2;
+          const groupStartX = groupCenterX - totalBarSpace / 2;
+
+          // Group label
+          const labelEl = createEl('text', {
+            x: groupCenterX, y: h + 28,
+            'text-anchor': 'middle',
+            fill: '#4a4a4a',
+            'font-size': '12',
+            'font-weight': '500'
+          });
+          labelEl.textContent = label;
+          g.appendChild(labelEl);
+
+          // Zero line for Pearson r (first group)
+          if (gi === 0) {
+            const range = pearsonMax - pearsonMin;
+            const zeroY = h - ((0 - pearsonMin) / range) * h;
+            g.appendChild(createEl('line', {
+              x1: groupStartX - 8,
+              y1: zeroY,
+              x2: groupStartX + totalBarSpace + 8,
+              y2: zeroY,
+              stroke: '#6b7280',
+              'stroke-width': 1.5,
+              'stroke-dasharray': '4 3'
+            }));
+            // Zero label
+            const zeroLabel = createEl('text', {
+              x: groupStartX - 12,
+              y: zeroY + 4,
+              'text-anchor': 'end',
+              fill: '#6b7280',
+              'font-size': '9'
+            });
+            zeroLabel.textContent = '0';
+            g.appendChild(zeroLabel);
+          }
+
+          benchmarks.forEach((benchmark, bi) => {
+            let val, maxVal, minVal;
+            if (gi === 0) {
+              val = benchmark.pearson;
+              maxVal = pearsonMax;
+              minVal = pearsonMin;
+            } else {
+              val = benchmark.mmrv;
+              maxVal = mmrvMax;
+              minVal = 0;
+            }
+
+            const barX = groupStartX + bi * (barWidth + barGap);
+            const color = benchmarkColors[benchmark.name] || '#888';
+
+            // Calculate bar position
+            const range = maxVal - minVal;
+            const zeroY = h - ((0 - minVal) / range) * h;
+            const valY = h - ((val - minVal) / range) * h;
+
+            let barY, barH;
+            if (val >= 0) {
+              barY = valY;
+              barH = zeroY - valY;
+            } else {
+              barY = zeroY;
+              barH = valY - zeroY;
+            }
+
+            const bar = createEl('rect', {
+              x: barX,
+              y: barY,
+              width: barWidth,
+              height: Math.max(barH, 2),
+              fill: color,
+              rx: 3
+            });
+            g.appendChild(bar);
+
+            // Value label - position based on positive/negative
+            // For negative: barY + barH is the bottom of the bar
+            const labelY = val >= 0 ? valY - 8 : barY + barH + 14;
+            const valLabel = createEl('text', {
+              x: barX + barWidth / 2,
+              y: labelY,
+              'text-anchor': 'middle',
+              fill: color,
+              'font-size': '9',
+              'font-weight': '600'
+            });
+            valLabel.textContent = val.toFixed(2);
+            g.appendChild(valLabel);
+          });
+        });
+
+        // Update benchmark legend (bold = shown in correlation plot)
+        if (benchmarkLegend) {
+          const shownInCorrelation = ['PolaRiS', 'LIBERO 10k'];
+          benchmarkLegend.innerHTML = '';
+          benchmarks.forEach((benchmark) => {
+            const color = benchmarkColors[benchmark.name] || '#888';
+            const isBold = shownInCorrelation.includes(benchmark.name);
+            const item = document.createElement('span');
+            item.className = 'legend-item';
+            item.innerHTML = `<span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${color};margin-right:6px;vertical-align:middle;"></span><span style="font-weight:${isBold ? '700' : '400'}">${benchmark.name}</span>`;
+            benchmarkLegend.appendChild(item);
+          });
+          // Add note about bold entries
+          const note = document.createElement('span');
+          note.className = 'legend-item';
+          note.style.cssText = 'font-size:11px;color:#6b7280;font-style:italic;margin-left:8px;';
+          note.textContent = '(bold = in correlation plot)';
+          benchmarkLegend.appendChild(note);
+        }
+      };
+    });
+
+    // Co-training data mix bar plot
+    document.addEventListener('DOMContentLoaded', () => {
+      const svg = document.getElementById('cotrain-bar');
+      if (!svg) return;
+
+      const createEl = (tag, attrs) => {
+        const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+        Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+        return el;
+      };
+
+      const renderCotrainBar = (metrics) => {
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+        const margin = { top: 20, right: 20, bottom: 70, left: 50 };
+        const w = 400 - margin.left - margin.right;
+        const h = 310 - margin.top - margin.bottom;
+
+        const g = createEl('g', { transform: `translate(${margin.left},${margin.top})` });
+        svg.appendChild(g);
+
+        // Use OOD Zeroshot and OOD Cotrained
+        const conditions = [
+          { label: 'Zeroshot', pearson: metrics['OOD Zeroshot'].pearson, mmrv: metrics['OOD Zeroshot'].mmrv, color: '#9ca3af' },
+          { label: 'Cotrained', pearson: metrics['OOD Cotrained'].pearson, mmrv: metrics['OOD Cotrained'].mmrv, color: '#c026d3' }
+        ];
+
+        const groups = ['Pearson r ↑', 'MMRV ↓'];
+        const groupWidth = w / 2;
+        const barWidth = 50;
+        const barGap = 12;
+
+        // Grid
+        for (let i = 1; i <= 4; i++) {
+          const gy = (i / 5) * h;
+          g.appendChild(createEl('line', { x1: 0, y1: gy, x2: w, y2: gy, stroke: 'rgba(0,0,0,0.06)', 'stroke-width': 1, 'stroke-dasharray': '4 4' }));
+        }
+
+        // Axes
+        g.appendChild(createEl('line', { x1: 0, y1: h, x2: w, y2: h, stroke: '#9ca3af', 'stroke-width': 2 }));
+        g.appendChild(createEl('line', { x1: 0, y1: 0, x2: 0, y2: h, stroke: '#9ca3af', 'stroke-width': 2 }));
+
+        groups.forEach((groupLabel, gi) => {
+          const groupCenterX = gi * groupWidth + groupWidth / 2;
+          const totalBarSpace = conditions.length * barWidth + (conditions.length - 1) * barGap;
+          const groupStartX = groupCenterX - totalBarSpace / 2;
+
+          // Group label
+          const labelEl = createEl('text', {
+            x: groupCenterX, y: h + 30,
+            'text-anchor': 'middle',
+            fill: '#4a4a4a',
+            'font-size': '11',
+            'font-weight': '500'
+          });
+          labelEl.textContent = groupLabel;
+          g.appendChild(labelEl);
+
+          conditions.forEach((cond, ci) => {
+            const val = gi === 0 ? cond.pearson : cond.mmrv;
+            const maxVal = gi === 0 ? 1 : 0.5;
+            const barX = groupStartX + ci * (barWidth + barGap);
+            const barH = (val / maxVal) * h;
+
+            // Bar
+            const bar = createEl('rect', {
+              x: barX,
+              y: h - barH,
+              width: barWidth,
+              height: Math.max(barH, 2),
+              fill: cond.color,
+              rx: 4
+            });
+            g.appendChild(bar);
+
+            // Value label
+            const valLabel = createEl('text', {
+              x: barX + barWidth / 2,
+              y: h - barH - 6,
+              'text-anchor': 'middle',
+              fill: cond.color,
+              'font-size': '11',
+              'font-weight': '600'
+            });
+            valLabel.textContent = val.toFixed(2);
+            g.appendChild(valLabel);
+          });
+        });
+
+        // Legend
+        const legendY = h + 42;
+        conditions.forEach((cond, i) => {
+          const legendX = w / 2 - 60 + i * 80;
+          g.appendChild(createEl('rect', {
+            x: legendX, y: legendY, width: 12, height: 12,
+            fill: cond.color, rx: 2
+          }));
+          const legendLabel = createEl('text', {
+            x: legendX + 18, y: legendY + 10,
+            fill: '#4a4a4a', 'font-size': '11'
+          });
+          legendLabel.textContent = cond.label;
+          g.appendChild(legendLabel);
+        });
+      };
+
+      fetch('./assets/data/data_mix_metrics.json')
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        })
+        .then((metrics) => {
+          renderCotrainBar(metrics);
+        })
+        .catch((err) => {
+          console.warn('Co-training metrics load failed', err);
         });
     });
 
