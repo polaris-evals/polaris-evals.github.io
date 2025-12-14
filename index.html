@@ -666,12 +666,15 @@
 
         // Clean up previous viewer
         if (viewer) {
-          viewer.dispose();
+          try {
+            viewer.dispose();
+          } catch (e) {
+            console.warn('Viewer dispose error:', e);
+          }
           viewer = null;
-          // Remove old canvas
-          const oldCanvas = gsplatContainer.querySelector('canvas');
-          if (oldCanvas) oldCanvas.remove();
         }
+        // Remove any existing canvases
+        gsplatContainer.querySelectorAll('canvas').forEach(c => c.remove());
 
         try {
           // Import library if not loaded
