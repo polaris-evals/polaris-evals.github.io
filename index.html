@@ -255,7 +255,10 @@
             <div class="gsplat-controls">
               <span class="gsplat-hint">Click and drag to rotate • Scroll to zoom</span>
             </div>
-            <div class="gsplat-loading" id="gsplatLoading">Loading scene...</div>
+            <div class="gsplat-loading" id="gsplatLoading">
+              <div class="gsplat-loading-text">Loading scene...</div>
+              <div class="gsplat-progress-bar"><div class="gsplat-progress-fill" id="gsplatProgressFill"></div></div>
+            </div>
           </div>
         </div>
 
@@ -661,7 +664,10 @@
         const scene = scenes[sceneKey];
         if (!scene) return;
 
-        gsplatLoading.textContent = 'Initializing viewer...';
+        const gsplatLoadingText = gsplatLoading.querySelector('.gsplat-loading-text');
+        const gsplatProgressFill = document.getElementById('gsplatProgressFill');
+        gsplatLoadingText.textContent = 'Initializing viewer...';
+        gsplatProgressFill.style.width = '0%';
         gsplatLoading.classList.remove('hidden');
 
         // Clean up previous viewer
@@ -693,16 +699,20 @@
             selfDrivenMode: true
           });
 
-          gsplatLoading.textContent = 'Loading splats...';
+          gsplatLoadingText.textContent = 'Loading splats...';
 
           // Load the scene with transform settings
           await viewer.addSplatScene(scene.file, {
             splatAlphaRemovalThreshold: 5,
             showLoadingUI: false,
-            progressiveLoad: true,
+            progressiveLoad: false,
             position: scene.position || [0, 0, 0],
             rotation: scene.rotation || [0, 0, 0, 1],
-            scale: scene.scale || [1, 1, 1]
+            scale: scene.scale || [1, 1, 1],
+            onProgress: (percent, message) => {
+              gsplatProgressFill.style.width = Math.round(percent) + '%';
+              gsplatLoadingText.textContent = message || `Loading... ${Math.round(percent)}%`;
+            }
           });
 
           viewer.start();
@@ -711,7 +721,8 @@
 
         } catch (error) {
           console.error('Viewer error:', error);
-          gsplatLoading.textContent = 'Error: ' + error.message;
+          gsplatLoadingText.textContent = 'Error: ' + error.message;
+          gsplatProgressFill.style.width = '0%';
         }
       };
 

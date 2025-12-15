@@ -1926,6 +1926,26 @@ a#figure-3-img img {
   display: none;
 }
 
+.gsplat-loading-text {
+  margin-bottom: 10px;
+}
+
+.gsplat-progress-bar {
+  width: 200px;
+  height: 6px;
+  background: var(--bg-primary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.gsplat-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--honey-bronze);
+  border-radius: 3px;
+  transition: width 0.2s ease-out;
+}
+
 /* Mesh Half - Vertical stacking */
 .mesh-half {
   min-height: 500px;
