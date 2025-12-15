@@ -320,10 +320,7 @@
             <div class="gsplat-controls">
               <span class="gsplat-hint">Click and drag to rotate • Scroll to zoom</span>
             </div>
-            <div class="gsplat-loading" id="gsplatLoading">
-              <div class="gsplat-loading-text">Loading scene...</div>
-              <div class="gsplat-progress-bar"><div class="gsplat-progress-fill" id="gsplatProgressFill"></div></div>
-            </div>
+            <div class="gsplat-loading" id="gsplatLoading">Loading scene...</div>
           </div>
         </div>
       </div>
@@ -668,7 +665,6 @@
             video.src = `./assets/videos/objects/${entry.video}`;
             video.classList.remove('hidden');
             video.load();
-
             video.addEventListener('loadedmetadata', adjustVideoHeight);
             // Also check if metadata is already available
             if (video.readyState >= 1) {
