@@ -1791,7 +1791,8 @@ a#figure-3-img img {
 
 .mesh-viewer-frame {
   width: 100%;
-  min-height: 360px;
+  height: auto;
+  min-height: 300px;
   border-radius: 14px;
   background: var(--bg-deep);
   border: 1px solid var(--border-subtle);
@@ -1806,8 +1807,8 @@ a#figure-3-img img {
 
 .mesh-video {
   width: 100%;
-  height: 360px;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
   border-radius: 14px;
   background: #000;
   border: 1px solid var(--border-subtle);
@@ -1831,6 +1832,10 @@ a#figure-3-img img {
   grid-template-columns: 1fr 1fr;
   gap: 24px;
   margin-top: 20px;
+}
+
+.reconstruction-split-container.full-width {
+  grid-template-columns: 1fr;
 }
 
 .reconstruction-half {
@@ -1888,6 +1893,15 @@ a#figure-3-img img {
   height: 100% !important;
   display: block;
   border-radius: 14px;
+}
+
+.gsplat-viewer-container iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  border: none;
+  border-radius: 14px;
+  display: block;
 }
 
 .gsplat-controls {
@@ -1967,8 +1981,8 @@ a#figure-3-img img {
 }
 
 .mesh-columns-vertical .mesh-video {
-  height: 160px;
-  max-height: 160px;
+  height: auto;
+  max-height: 300px;
 }
 
 .mesh-columns-vertical .mesh-viewer-frame {
