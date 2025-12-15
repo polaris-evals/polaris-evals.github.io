@@ -437,6 +437,25 @@ h1, h2, h3, h4, h5, h6, .section-heading {
   color: var(--honey-bronze);
 }
 
+.authors sup {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-left: 1px;
+}
+
+.authors .author-note {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  margin-bottom: 4px;
+}
+
+.authors .affiliation sup {
+  font-size: 9px;
+  margin-right: 2px;
+}
+
 /* Hero Actions */
 .hero-actions {
   display: flex;
@@ -1361,7 +1380,7 @@ a#figure-3-img img {
 }
 
 .comparison-legend .legend-dot.libero {
-  background: #2563eb;
+  background: #eab308;
   opacity: 0.6;
 }
 
@@ -1926,6 +1945,7 @@ a#figure-3-img img {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 20;
   font-family: 'Fira Code', monospace;
   font-size: 13px;
   color: var(--text-muted);

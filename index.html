@@ -104,23 +104,25 @@
       </div>
 
       <div class="authors">
-        <a href="https://arhanjain.github.io/" target="_blank">Arhan Jain*</a>,
-        <a href="https://robo-alex.github.io/" target="_blank">Mingtong Zhang*</a>,
-        <a href="https://www.linkedin.com/in/kanav1arora/" target="_blank">Kanav Arora</a>,
-        <a href="https://verityw.github.io/" target="_blank">William Chen</a>,
-        <a href="https://marceltorne.github.io/" target="_blank">Marcel Torne</a>,<br>
-        <a href="https://zubairirshad.com/" target="_blank">Muhammad Zubair Irshad</a>,
-        <a href="https://zakharos.github.io/" target="_blank">Sergey Zakharov</a>,
-        <a href="https://yuewang.xyz/" target="_blank">Yue Wang</a>,
-        <a href="https://people.eecs.berkeley.edu/~svlevine/" target="_blank">Sergey Levine</a>,
-        <a href="" target="_blank">Chelsea Finn</a>,
-        <a href="" target="_blank">Wei-Chiu Ma</a>,<br>
-        <a href="" target="_blank">Dhruv Shah</a>,
-        <a href="" target="_blank">Abhishek Gupta†</a>,
-        <a href="" target="_blank">Karl Pertsch†</a> <br>
-        (*:equal contribution, †: equal advising)
-        <span class="affiliation">University of Washington, Princeton University, UC Berkeley, Stanford University, <br>
-          Toyota Research Institute, University of Southern California, Cornell University, Physical Intelligence</span>
+        <a href="https://arhanjain.github.io/" target="_blank">Arhan Jain</a><sup>1*</sup>,
+        <a href="https://robo-alex.github.io/" target="_blank">Mingtong Zhang</a><sup>2*</sup>,
+        <a href="https://www.linkedin.com/in/kanav1arora/" target="_blank">Kanav Arora</a><sup>1</sup>,
+        <a href="https://verityw.github.io/" target="_blank">William Chen</a><sup>5</sup>,
+        <a href="https://marceltorne.github.io/" target="_blank">Marcel Torne</a><sup>6</sup>,<br>
+        <a href="https://zubairirshad.com/" target="_blank">Muhammad Zubair Irshad</a><sup>3</sup>,
+        <a href="https://zakharos.github.io/" target="_blank">Sergey Zakharov</a><sup>3</sup>,
+        <a href="https://yuewang.xyz/" target="_blank">Yue Wang</a><sup>4</sup>,
+        <a href="https://people.eecs.berkeley.edu/~svlevine/" target="_blank">Sergey Levine</a><sup>5,8</sup>,
+        <a href="https://ai.stanford.edu/~cbfinn/" target="_blank">Chelsea Finn</a><sup>6,8</sup>,
+        <a href="https://sites.google.com/view/wei-chiu-ma/" target="_blank">Wei-Chiu Ma</a><sup>7</sup>,<br>
+        <a href="https://www.dhruv.sh/" target="_blank">Dhruv Shah</a><sup>2</sup>,
+        <a href="https://homes.cs.washington.edu/~abhgupta/" target="_blank">Abhishek Gupta</a><sup>1,3‡</sup>,
+        <a href="https://kpertsch.github.io/" target="_blank">Karl Pertsch</a><sup>5,6,8‡</sup><br>
+        <span class="author-note">*Equal contribution, ‡Equal advising</span>
+        <span class="affiliation">
+          <sup>1</sup>University of Washington, <sup>2</sup>Princeton University, <sup>3</sup>Toyota Research Institute, <sup>4</sup>University of Southern California,<br>
+          <sup>5</sup>UC Berkeley, <sup>6</sup>Stanford University, <sup>7</sup>Cornell University, <sup>8</sup>Physical Intelligence
+        </span>
       </div>
 
       <div class="hero-actions">
@@ -295,7 +297,11 @@
             <div class="reconstruction-half-title">Gaussian Splat Viewer</div>
           </div>
           <div class="gsplat-viewer-container">
-            <iframe src="./assets/splats/workbench.html"
+            <div class="gsplat-loading" id="gsplatIframeLoading">
+              <div class="gsplat-loading-text">Loading viewer...</div>
+              <div class="gsplat-progress-bar"><div class="gsplat-progress-fill" id="gsplatIframeProgress"></div></div>
+            </div>
+            <iframe id="gsplatIframe" src="./assets/splats/workbench.html"
               style="width: 100%; height: 100%; min-height: 500px; border: none;" allowfullscreen>
             </iframe>
           </div>
@@ -611,6 +617,30 @@
       window.addEventListener('resize', initSlider);
     });
 
+    // Gaussian Splat iframe loading indicator
+    document.addEventListener('DOMContentLoaded', () => {
+      const iframe = document.getElementById('gsplatIframe');
+      const loading = document.getElementById('gsplatIframeLoading');
+      const progress = document.getElementById('gsplatIframeProgress');
+      if (!iframe || !loading) return;
+
+      // Animate progress bar while loading
+      let progressValue = 0;
+      const progressInterval = setInterval(() => {
+        // Slow down as we approach 90%
+        const increment = progressValue < 50 ? 2 : progressValue < 80 ? 0.5 : 0.1;
+        progressValue = Math.min(progressValue + increment, 90);
+        progress.style.width = progressValue + '%';
+      }, 100);
+
+      iframe.addEventListener('load', () => {
+        clearInterval(progressInterval);
+        progress.style.width = '100%';
+        setTimeout(() => {
+          loading.classList.add('hidden');
+        }, 300);
+      });
+    });
 
     // TRELLIS mesh switcher
     document.addEventListener('DOMContentLoaded', () => {
@@ -906,7 +936,7 @@
           const cy = scaleY(d.real);
           // Use color from data for PolaRiS, use blue for LIBERO
           const isPolaris = d.source === 'polaris';
-          const fill = isPolaris ? (d.color || '#c026d3') : '#2563eb';
+          const fill = isPolaris ? (d.color || '#c026d3') : '#eab308';
           // Use marker from data, map to shape name
           const shape = markerToShape[d.marker] || d.marker || 'circle';
           const size = 6;
@@ -1026,7 +1056,7 @@
           benchmarkLegend.appendChild(polItem);
           const libItem = document.createElement('span');
           libItem.className = 'legend-item';
-          libItem.innerHTML = `<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#2563eb;opacity:0.5;margin-right:6px;vertical-align:middle;"></span>LIBERO`;
+          libItem.innerHTML = `<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#eab308;opacity:0.5;margin-right:6px;vertical-align:middle;"></span>LIBERO`;
           benchmarkLegend.appendChild(libItem);
         }
 
@@ -1149,10 +1179,11 @@
           }));
 
         // Colors for each benchmark - distinct colors (LIBERO 10k matches correlation scatter)
+        // Using colorblind-friendly palette: yellow for LIBERO 10k (distinct from purple)
         const benchmarkColors = {
           'PolaRiS': '#c026d3',
-          'LIBERO 1k': '#f59e0b',
-          'LIBERO 10k': '#2563eb',
+          'LIBERO 1k': '#f87171',
+          'LIBERO 10k': '#eab308',
           'LIBERO 50k': '#10b981',
           'MSE (Train)': '#ef4444',
           'MSE (Val)': '#f97316'
@@ -1276,23 +1307,23 @@
           });
         });
 
-        // Update benchmark legend (bold = shown in correlation plot)
+        // Update benchmark legend (italic = shown in correlation plot)
         if (benchmarkLegend) {
           const shownInCorrelation = ['PolaRiS', 'LIBERO 10k'];
           benchmarkLegend.innerHTML = '';
           benchmarks.forEach((benchmark) => {
             const color = benchmarkColors[benchmark.name] || '#888';
-            const isBold = shownInCorrelation.includes(benchmark.name);
+            const inCorrelation = shownInCorrelation.includes(benchmark.name);
             const item = document.createElement('span');
             item.className = 'legend-item';
-            item.innerHTML = `<span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${color};margin-right:6px;vertical-align:middle;"></span><span style="font-weight:${isBold ? '700' : '400'}">${benchmark.name}</span>`;
+            item.innerHTML = `<span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${color};margin-right:6px;vertical-align:middle;"></span><span style="font-style:${inCorrelation ? 'italic' : 'normal'}">${benchmark.name}</span>`;
             benchmarkLegend.appendChild(item);
           });
-          // Add note about bold entries
+          // Add note about italic entries
           const note = document.createElement('span');
           note.className = 'legend-item';
-          note.style.cssText = 'font-size:11px;color:#6b7280;font-style:italic;margin-left:8px;';
-          note.textContent = '(bold = in correlation plot)';
+          note.style.cssText = 'font-size:11px;color:#6b7280;margin-left:8px;';
+          note.textContent = '(italic = in correlation plot)';
           benchmarkLegend.appendChild(note);
         }
       };
