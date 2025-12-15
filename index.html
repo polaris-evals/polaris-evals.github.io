@@ -38,34 +38,22 @@
           <span class="progress-label">Intro</span>
         </a>
       </div>
-      <div class="progress-item" data-section="slider-comparison">
-        <a href="#slider-comparison">
-          <span class="progress-dot"></span>
-          <span class="progress-label">Real vs Sim</span>
-        </a>
-      </div>
-      <div class="progress-item" data-section="abstract">
-        <a href="#abstract">
-          <span class="progress-dot"></span>
-          <span class="progress-label">Abstract</span>
-        </a>
-      </div>
       <div class="progress-item" data-section="pipeline">
         <a href="#pipeline">
           <span class="progress-dot"></span>
           <span class="progress-label">Pipeline</span>
         </a>
       </div>
-      <div class="progress-item" data-section="co-training">
-        <a href="#co-training">
-          <span class="progress-dot"></span>
-          <span class="progress-label">Co-training</span>
-        </a>
-      </div>
       <div class="progress-item" data-section="results">
         <a href="#results">
           <span class="progress-dot"></span>
           <span class="progress-label">Results</span>
+        </a>
+      </div>
+      <div class="progress-item" data-section="co-training">
+        <a href="#co-training">
+          <span class="progress-dot"></span>
+          <span class="progress-label">Co-training</span>
         </a>
       </div>
       <!-- Commented out - gallery section hidden
@@ -80,12 +68,6 @@
         <a href="#resources">
           <span class="progress-dot"></span>
           <span class="progress-label">Resources</span>
-        </a>
-      </div>
-      <div class="progress-item" data-section="bibtex">
-        <a href="#bibtex">
-          <span class="progress-dot"></span>
-          <span class="progress-label">BibTeX</span>
         </a>
       </div>
     </div>
@@ -120,8 +102,10 @@
         <a href="https://kpertsch.github.io/" target="_blank">Karl Pertsch</a><sup>5,6,8‡</sup><br>
         <span class="author-note">*Equal contribution, ‡Equal advising</span>
         <span class="affiliation">
-          <sup>1</sup>University of Washington, <sup>2</sup>Princeton University, <sup>3</sup>Toyota Research Institute, <sup>4</sup>University of Southern California,<br>
-          <sup>5</sup>UC Berkeley, <sup>6</sup>Stanford University, <sup>7</sup>Cornell University, <sup>8</sup>Physical Intelligence
+          <sup>1</sup>University of Washington, <sup>2</sup>Princeton University, <sup>3</sup>Toyota Research Institute,
+          <sup>4</sup>University of Southern California,<br>
+          <sup>5</sup>UC Berkeley, <sup>6</sup>Stanford University, <sup>7</sup>Cornell University, <sup>8</sup>Physical
+          Intelligence
         </span>
       </div>
 
@@ -262,8 +246,8 @@
           <label class="mesh-selector">
             <span>Select object</span>
             <select id="meshSelect">
-              <option value="coke">Coke</option>
               <option value="cleaner">Cleaner</option>
+              <option value="coke">Coke</option>
               <option value="electricdrill">Electric Drill</option>
               <option value="pot">Pot</option>
               <option value="scissor">Scissor</option>
@@ -299,7 +283,9 @@
           <div class="gsplat-viewer-container">
             <div class="gsplat-loading" id="gsplatIframeLoading">
               <div class="gsplat-loading-text">Loading viewer...</div>
-              <div class="gsplat-progress-bar"><div class="gsplat-progress-fill" id="gsplatIframeProgress"></div></div>
+              <div class="gsplat-progress-bar">
+                <div class="gsplat-progress-fill" id="gsplatIframeProgress"></div>
+              </div>
             </div>
             <iframe id="gsplatIframe" src="./assets/splats/workbench.html"
               style="width: 100%; height: 100%; min-height: 500px; border: none;" allowfullscreen>
@@ -491,58 +477,57 @@
     document.addEventListener('DOMContentLoaded', () => {
       const progressItems = document.querySelectorAll('.progress-item');
       const progressLineFill = document.querySelector('.progress-line-fill');
-      const sections = [
-        { id: 'hero', el: document.querySelector('.hero-flow') },
-        { id: 'slider-comparison', el: document.getElementById('slider-comparison') },
-        { id: 'abstract', el: document.getElementById('abstract') },
-        { id: 'pipeline', el: document.getElementById('pipeline') },
-        { id: 'co-training', el: document.getElementById('co-training') },
-        { id: 'results', el: document.getElementById('results') },
-        { id: 'gallery', el: document.getElementById('gallery') },
-        { id: 'resources', el: document.getElementById('resources') },
-        { id: 'bibtex', el: document.getElementById('bibtex') }
-      ].filter(s => s.el);
+      const progressTrack = document.querySelector('.progress-track');
+
+      // Build sections array from progress items to ensure they match
+      const sections = [];
+      progressItems.forEach(item => {
+        const id = item.dataset.section;
+        let el;
+        if (id === 'hero') {
+          el = document.querySelector('.hero-flow');
+        } else {
+          el = document.getElementById(id);
+        }
+        if (el) {
+          sections.push({ id, el });
+        }
+      });
 
       const updateProgress = () => {
-        const scrollY = window.scrollY;
+        if (sections.length === 0) return;
+
         const viewportHeight = window.innerHeight;
-        const docHeight = document.documentElement.scrollHeight - viewportHeight;
-        const scrollPercent = scrollY / docHeight;
+        const activationThreshold = viewportHeight * 0.35;
 
-        // Update progress line fill
-        if (progressLineFill) {
-          const trackHeight = document.querySelector('.progress-track')?.offsetHeight || 0;
-          progressLineFill.style.height = `${scrollPercent * (trackHeight - 24)}px`;
-        }
-
-        // Find active section - use conservative approach to match progress bar fill
-        // Only activate a section when it's actually been scrolled to (not just approaching)
+        // Find active section index
         let activeIdx = 0;
-        const activationThreshold = viewportHeight * 0.3; // Section must be 30% down viewport to activate
-
-        // Iterate through sections and find the last one that has been scrolled past the threshold
         for (let idx = 0; idx < sections.length; idx++) {
           const rect = sections[idx].el.getBoundingClientRect();
-
-          // A section is considered "reached" when its top has scrolled past the threshold
-          // rect.top is relative to viewport (negative = scrolled past, positive = below viewport)
           if (rect.top <= activationThreshold) {
             activeIdx = idx;
           } else {
-            // Stop at first section that hasn't been reached yet
             break;
           }
         }
 
-        // Update items
-        progressItems.forEach((item, idx) => {
+        // Update progress line fill based on active section
+        if (progressLineFill && progressTrack) {
+          const trackHeight = progressTrack.offsetHeight;
+          const maxFillHeight = trackHeight - 44; // Account for top/bottom padding
+          const fillHeight = (activeIdx / Math.max(sections.length - 1, 1)) * maxFillHeight;
+          progressLineFill.style.height = `${Math.min(Math.max(fillHeight, 0), maxFillHeight)}px`;
+        }
+
+        // Update dot states
+        progressItems.forEach(item => {
           const sectionId = item.dataset.section;
           const sectionIdx = sections.findIndex(s => s.id === sectionId);
 
           item.classList.remove('active', 'passed');
           if (sectionIdx === activeIdx) {
             item.classList.add('active');
-          } else if (sectionIdx < activeIdx) {
+          } else if (sectionIdx >= 0 && sectionIdx < activeIdx) {
             item.classList.add('passed');
           }
         });
@@ -651,8 +636,8 @@
       const note = document.getElementById('meshVideoNote');
 
       const meshes = {
-        coke: { label: 'Coke', file: 'mesh_coke.glb', video: 'coke.mp4' },
         cleaner: { label: 'Cleaner', file: 'mesh_cleaner.glb', video: 'cleaner.mp4' },
+        coke: { label: 'Coke', file: 'mesh_coke.glb', video: 'coke.mp4' },
         electricdrill: { label: 'Electric Drill', file: 'mesh_electricdrill.glb', video: 'electricdrill.mp4' },
         pot: { label: 'Pot', file: 'mesh_pot.glb', video: 'pot.mp4' },
         scissor: { label: 'Scissor', file: 'mesh_scissor.glb', video: 'scissor.mp4' },
@@ -1162,8 +1147,8 @@
 
         while (barSvg.firstChild) barSvg.removeChild(barSvg.firstChild);
 
-        // Larger dimensions for 6 benchmarks with negative values
-        const margin = { top: 20, right: 30, bottom: 40, left: 50 };
+        // Dimensions to match correlation scatter height
+        const margin = { top: 20, right: 30, bottom: 50, left: 50 };
         const w = 500 - margin.left - margin.right;
         const h = 320 - margin.top - margin.bottom;
 
@@ -1182,6 +1167,7 @@
         // Using colorblind-friendly palette: yellow for LIBERO 10k (distinct from purple)
         const benchmarkColors = {
           'PolaRiS': '#c026d3',
+          'Ctrl-World': '#3b82f6',
           'LIBERO 1k': '#f87171',
           'LIBERO 10k': '#eab308',
           'LIBERO 50k': '#10b981',
@@ -1193,12 +1179,12 @@
         const groups = ['Pearson r ↑', 'MMRV ↓'];
         const groupWidth = w / 2;
         const numBars = benchmarks.length;
-        const barWidth = 28;
-        const barGap = 6;
+        const barWidth = 22;
+        const barGap = 4;
         const totalBarSpace = numBars * barWidth + (numBars - 1) * barGap;
 
-        // Scales
-        const pearsonMin = -0.6;
+        // Scales - extended pearsonMin to leave room for negative value labels
+        const pearsonMin = -0.8;
         const pearsonMax = 1;
         const mmrvMax = 0.5;
 
