@@ -278,7 +278,7 @@
       <div class="reconstruction-split-container full-width">
         <div class="reconstruction-half gsplat-half">
           <div class="reconstruction-half-header">
-            <div class="reconstruction-half-title">Gaussian Splat Viewer</div>
+            <div class="reconstruction-half-title">Gaussian Splat Viewer (Drag and Scroll to rotate and zoom)</div>
           </div>
           <div class="gsplat-viewer-container">
             <div class="gsplat-loading" id="gsplatIframeLoading">
@@ -287,7 +287,7 @@
                 <div class="gsplat-progress-fill" id="gsplatIframeProgress"></div>
               </div>
             </div>
-            <iframe id="gsplatIframe" src="./assets/splats/workbench.html"
+            <iframe id="gsplatIframe" data-gzsrc="./assets/splats/workbench.html.gz"
               style="width: 100%; height: 100%; min-height: 500px; border: none;" allowfullscreen>
             </iframe>
           </div>
@@ -602,29 +602,103 @@
       window.addEventListener('resize', initSlider);
     });
 
-    // Gaussian Splat iframe loading indicator
-    document.addEventListener('DOMContentLoaded', () => {
+    // Gaussian Splat iframe - fetch gzipped file, decompress, patch, and load
+    document.addEventListener('DOMContentLoaded', async () => {
       const iframe = document.getElementById('gsplatIframe');
       const loading = document.getElementById('gsplatIframeLoading');
       const progress = document.getElementById('gsplatIframeProgress');
+      const loadingText = loading?.querySelector('.gsplat-loading-text');
       if (!iframe || !loading) return;
 
-      // Animate progress bar while loading
-      let progressValue = 0;
-      const progressInterval = setInterval(() => {
-        // Slow down as we approach 90%
-        const increment = progressValue < 50 ? 2 : progressValue < 80 ? 0.5 : 0.1;
-        progressValue = Math.min(progressValue + increment, 90);
-        progress.style.width = progressValue + '%';
-      }, 100);
+      const gzSrc = iframe.dataset.gzsrc;
+      if (!gzSrc) {
+        // Fallback to regular loading if no gzsrc
+        iframe.addEventListener('load', () => loading.classList.add('hidden'));
+        return;
+      }
 
-      iframe.addEventListener('load', () => {
-        clearInterval(progressInterval);
-        progress.style.width = '100%';
-        setTimeout(() => {
-          loading.classList.add('hidden');
-        }, 300);
-      });
+      try {
+        loadingText.textContent = 'Downloading viewer...';
+        const response = await fetch(gzSrc);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const contentLength = response.headers.get('content-length');
+        const total = contentLength ? parseInt(contentLength, 10) : 0;
+        let loaded = 0;
+
+        const reader = response.body.getReader();
+        const chunks = [];
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          chunks.push(value);
+          loaded += value.length;
+          if (total > 0) {
+            const pct = Math.round((loaded / total) * 70);
+            progress.style.width = pct + '%';
+            loadingText.textContent = `Downloading... ${Math.round(loaded / 1024 / 1024)}MB`;
+          }
+        }
+
+        const compressedData = new Uint8Array(loaded);
+        let offset = 0;
+        for (const chunk of chunks) {
+          compressedData.set(chunk, offset);
+          offset += chunk.length;
+        }
+
+        loadingText.textContent = 'Decompressing...';
+        progress.style.width = '75%';
+
+        const ds = new DecompressionStream('gzip');
+        const decompressedStream = new Blob([compressedData]).stream().pipeThrough(ds);
+        const decompressedArrayBuffer = await new Response(decompressedStream).arrayBuffer();
+
+        progress.style.width = '85%';
+        loadingText.textContent = 'Preparing viewer...';
+
+        let htmlText = new TextDecoder().decode(decompressedArrayBuffer);
+        const realBaseUrl = new URL('./assets/splats/workbench.html', window.location.href).href;
+
+        // Inject script to patch URL constructor for blob context
+        const patchScript = `<script>
+(function() {
+  const fakeHref = "${realBaseUrl}";
+  const OrigURL = window.URL;
+  window.URL = function(url, base) {
+    // Replace any blob: base URL with the real URL
+    if (base !== undefined && typeof base === 'string' && base.startsWith('blob:')) {
+      base = fakeHref;
+    }
+    return new OrigURL(url, base);
+  };
+  window.URL.prototype = OrigURL.prototype;
+  Object.setPrototypeOf(window.URL, OrigURL);
+  window.URL.createObjectURL = OrigURL.createObjectURL;
+  window.URL.revokeObjectURL = OrigURL.revokeObjectURL;
+  window.URL.canParse = OrigURL.canParse;
+})();
+<\/script>`;
+
+        htmlText = htmlText.replace('<head>', '<head>' + patchScript);
+
+        progress.style.width = '90%';
+        loadingText.textContent = 'Loading viewer...';
+
+        const htmlBlob = new Blob([htmlText], { type: 'text/html' });
+        const blobUrl = URL.createObjectURL(htmlBlob);
+
+        iframe.onload = () => {
+          progress.style.width = '100%';
+          setTimeout(() => loading.classList.add('hidden'), 300);
+        };
+        iframe.src = blobUrl;
+
+      } catch (err) {
+        console.error('Failed to load splat viewer:', err);
+        loadingText.textContent = 'Error: ' + err.message;
+      }
     });
 
     // TRELLIS mesh switcher
