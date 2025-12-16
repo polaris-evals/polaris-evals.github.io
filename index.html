@@ -228,9 +228,9 @@
       </div>
       <div class="pipeline-card">
         <div class="pipeline-step">Step 3 — Object & Robot Insertion</div>
-        <video src="assets/videos/real2sim/guivideo.mp4" autoplay muted loop playsinline></video>
+        <video src="assets/videos/real2sim/gui_demo.mp4" autoplay muted loop playsinline></video>
         <p>Robots are articulated with kinematics-aware splats. Objects are generated from multiview images (TRELLIS)
-          and made physics-ready. (replace it with ours)</p>
+          and made physics-ready.</p>
       </div>
     </div>
 
@@ -278,18 +278,31 @@
       <div class="reconstruction-split-container full-width">
         <div class="reconstruction-half gsplat-half">
           <div class="reconstruction-half-header">
-            <div class="reconstruction-half-title">Gaussian Splat Viewer (Drag and Scroll to rotate and zoom)</div>
+            <div class="reconstruction-half-title">Gaussian Splat Viewer <span id="gsplatViewerHint">(Drag and Scroll to rotate and zoom)</span></div>
           </div>
           <div class="gsplat-viewer-container">
-            <div class="gsplat-loading" id="gsplatIframeLoading">
-              <div class="gsplat-loading-text">Loading viewer...</div>
-              <div class="gsplat-progress-bar">
-                <div class="gsplat-progress-fill" id="gsplatIframeProgress"></div>
+            <!-- Desktop: Interactive WebGL viewer -->
+            <div id="gsplatDesktopViewer">
+              <div class="gsplat-loading" id="gsplatIframeLoading">
+                <div class="gsplat-loading-text">Loading viewer...</div>
+                <div class="gsplat-progress-bar">
+                  <div class="gsplat-progress-fill" id="gsplatIframeProgress"></div>
+                </div>
               </div>
+              <iframe id="gsplatIframe" data-gzsrc="./assets/splats/workbench.html.gz"
+                style="width: 100%; height: 100%; min-height: 500px; border: none;" allowfullscreen>
+              </iframe>
             </div>
-            <iframe id="gsplatIframe" data-gzsrc="./assets/splats/workbench.html.gz"
-              style="width: 100%; height: 100%; min-height: 500px; border: none;" allowfullscreen>
-            </iframe>
+            <!-- Mobile: Unsupported message -->
+            <div id="gsplatMobileViewer" style="display: none; width: 100%; height: 100%; min-height: 300px; background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%); border-radius: 8px; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 32px;">
+              <svg style="width: 48px; height: 48px; margin-bottom: 16px; opacity: 0.6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" stroke="rgba(255,255,255,0.8)"/>
+                <line x1="8" y1="21" x2="16" y2="21" stroke="rgba(255,255,255,0.8)"/>
+                <line x1="12" y1="17" x2="12" y2="21" stroke="rgba(255,255,255,0.8)"/>
+              </svg>
+              <div style="color: #fff; font-size: 16px; font-weight: 500; margin-bottom: 8px;">Gaussian Splat Viewer</div>
+              <div style="color: rgba(255,255,255,0.6); font-size: 14px;">Not supported on mobile.<br>Please visit on desktop for the interactive 3D viewer.</div>
+            </div>
           </div>
         </div>
       </div>
@@ -605,12 +618,31 @@
       window.addEventListener('resize', initSlider);
     });
 
+    // Mobile detection helper
+    function isMobileDevice() {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+        (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) ||
+        ('ontouchstart' in window && navigator.maxTouchPoints > 2);
+    }
+
     // Gaussian Splat iframe - fetch gzipped file, decompress, patch, and load
     document.addEventListener('DOMContentLoaded', async () => {
       const iframe = document.getElementById('gsplatIframe');
       const loading = document.getElementById('gsplatIframeLoading');
       const progress = document.getElementById('gsplatIframeProgress');
       const loadingText = loading?.querySelector('.gsplat-loading-text');
+      const desktopViewer = document.getElementById('gsplatDesktopViewer');
+      const mobileViewer = document.getElementById('gsplatMobileViewer');
+      const viewerHint = document.getElementById('gsplatViewerHint');
+
+      // Mobile fallback: show unsupported message instead of WebGL viewer
+      if (isMobileDevice()) {
+        if (desktopViewer) desktopViewer.style.display = 'none';
+        if (mobileViewer) mobileViewer.style.display = 'flex';
+        if (viewerHint) viewerHint.style.display = 'none';
+        return; // Skip loading the heavy WebGL viewer
+      }
+
       if (!iframe || !loading) return;
 
       const gzSrc = iframe.dataset.gzsrc;
