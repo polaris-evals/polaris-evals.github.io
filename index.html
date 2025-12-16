@@ -1831,6 +1831,8 @@
       const renderVideos = (records) => {
         let idx = 0;
 
+        let currentSim = 'polaris'; // 'polaris' or 'ctrlworld'
+
         const show = (dir) => {
           if (!records.length) return;
           const r = records[idx];
@@ -1862,18 +1864,77 @@
             return wrap;
           };
 
-          if (r.simVideo) pair.appendChild(addVid(r.simVideo, 'Sim'));
+          // Always show real first
           if (r.realVideo) pair.appendChild(addVid(r.realVideo, 'Real'));
+
+          if (currentSim === 'polaris' && r.simVideo) {
+            pair.appendChild(addVid(r.simVideo, 'PolaRiS'));
+          } else if (currentSim === 'ctrlworld' && r.ctrlWorldVideo) {
+            pair.appendChild(addVid(r.ctrlWorldVideo, 'Ctrl-World'));
+          }
 
           card.appendChild(pair);
 
           // Task name centered below videos
           const taskLabel = document.createElement('div');
           taskLabel.className = 'policy-video-task';
-          taskLabel.textContent = r.environment || '';
+          taskLabel.innerHTML = `${r.environment || ''} <br><span style="font-weight:400; font-size: 0.9em; color: var(--text-muted);">Policy: $\\pi_{0.5}$ (Joint Pos)</span>`;
           card.appendChild(taskLabel);
+
+          if (window.MathJax && window.MathJax.typesetPromise) {
+            window.MathJax.typesetPromise([taskLabel]);
+          }
           grid.appendChild(card);
         };
+
+        // Create Header Controls with Toggle
+        const headerControls = document.createElement('div');
+        headerControls.style.display = 'flex';
+        headerControls.style.justifyContent = 'center';
+        headerControls.style.marginBottom = '20px';
+        headerControls.style.gap = '16px';
+        headerControls.innerHTML = `
+          <div class="toggle-group" style="background: var(--bg-elevated); padding: 4px; border-radius: 8px; border: 1px solid var(--border-subtle); display: inline-flex;">
+            <button id="btn-polaris" class="toggle-btn active" style="padding: 6px 16px; border-radius: 6px; border: none; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-weight: 500; font-size: 13px; color: var(--text-primary); cursor: pointer; transition: all 0.2s;">PolaRiS</button>
+            <button id="btn-ctrlworld" class="toggle-btn" style="padding: 6px 16px; border-radius: 6px; border: none; background: transparent; font-weight: 500; font-size: 13px; color: var(--text-muted); cursor: pointer; transition: all 0.2s;">Ctrl-World</button>
+          </div>
+        `;
+
+        // Insert toggle before grid
+        grid.parentElement.insertBefore(headerControls, grid);
+
+        // Toggle Logic
+        const btnPolaris = headerControls.querySelector('#btn-polaris');
+        const btnCtrl = headerControls.querySelector('#btn-ctrlworld');
+
+        const updateToggle = (mode) => {
+          currentSim = mode;
+          if (mode === 'polaris') {
+            btnPolaris.classList.add('active');
+            btnPolaris.style.background = '#fff';
+            btnPolaris.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+            btnPolaris.style.color = 'var(--text-primary)';
+
+            btnCtrl.classList.remove('active');
+            btnCtrl.style.background = 'transparent';
+            btnCtrl.style.boxShadow = 'none';
+            btnCtrl.style.color = 'var(--text-muted)';
+          } else {
+            btnCtrl.classList.add('active');
+            btnCtrl.style.background = '#fff';
+            btnCtrl.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+            btnCtrl.style.color = 'var(--text-primary)';
+
+            btnPolaris.classList.remove('active');
+            btnPolaris.style.background = 'transparent';
+            btnPolaris.style.boxShadow = 'none';
+            btnPolaris.style.color = 'var(--text-muted)';
+          }
+          show();
+        };
+
+        btnPolaris.addEventListener('click', () => updateToggle('polaris'));
+        btnCtrl.addEventListener('click', () => updateToggle('ctrlworld'));
 
         const controls = document.createElement('div');
         controls.className = 'policy-video-controls';
