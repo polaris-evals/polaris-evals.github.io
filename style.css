@@ -1396,6 +1396,19 @@ a#figure-3-img img {
   .correlation-split {
     grid-template-columns: 1fr;
   }
+
+  .roboarena-section {
+    flex-direction: column !important;
+  }
+
+  .roboarena-right {
+    flex-shrink: 1 !important;
+    width: 100%;
+  }
+
+  .roboarena-right > div {
+    max-width: 100% !important;
+  }
 }
 
 #corr-scatter {
