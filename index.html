@@ -100,17 +100,19 @@
         <a href="https://www.dhruv.sh/" target="_blank">Dhruv Shah</a><sup>2</sup>,
         <a href="https://homes.cs.washington.edu/~abhgupta/" target="_blank">Abhishek Gupta</a><sup>1,5‡</sup>,
         <a href="https://kpertsch.github.io/" target="_blank">Karl Pertsch</a><sup>3,4,8‡</sup><br>
-        <span class="author-note">*Equal contribution, ‡Equal advising</span>
+        <span class="/Pauthor-note">*Equal contribution, ‡Equal advising</span>
         <span class="affiliation">
-          <sup>1</sup>University of Washington, <sup>2</sup>Princeton University, <sup>3</sup>University of California, Berkeley,
+          <sup>1</sup>University of Washington, <sup>2</sup>Princeton University, <sup>3</sup>University of California,
+          Berkeley,
           <sup>4</sup>Stanford University,<br>
-          <sup>5</sup>Toyota Research Institute, <sup>6</sup>University of Southern California, <sup>7</sup>Cornell University, <sup>8</sup>Physical
+          <sup>5</sup>Toyota Research Institute, <sup>6</sup>University of Southern California, <sup>7</sup>Cornell
+          University, <sup>8</sup>Physical
           Intelligence
         </span>
       </div>
 
       <div class="hero-actions">
-        <a class="cta primary" href="./VideoMimic.pdf" target="_blank">
+        <a class="cta primary" href="./PolaRiS_Tech_Report_Release.pdf" target="_blank">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
             style="vertical-align: -2px; margin-right: 6px;">
             <path
@@ -246,8 +248,8 @@
           <label class="mesh-selector">
             <span>Select object</span>
             <select id="meshSelect">
-              <option value="coke">Coke</option>
               <option value="cleaner">Cleaner</option>
+              <option value="coke">Coke</option>
               <option value="electricdrill">Electric Drill</option>
               <option value="pot">Pot</option>
               <option value="scissor">Scissor</option>
@@ -278,7 +280,8 @@
       <div class="reconstruction-split-container full-width">
         <div class="reconstruction-half gsplat-half">
           <div class="reconstruction-half-header">
-            <div class="reconstruction-half-title">Gaussian Splat Viewer <span id="gsplatViewerHint">(Drag and Scroll to rotate and zoom)</span></div>
+            <div class="reconstruction-half-title">Gaussian Splat Viewer <span id="gsplatViewerHint">(Drag and Scroll to
+                rotate and zoom)</span></div>
           </div>
           <div class="gsplat-viewer-container">
             <!-- Desktop: Interactive WebGL viewer -->
@@ -294,14 +297,18 @@
               </iframe>
             </div>
             <!-- Mobile: Unsupported message -->
-            <div id="gsplatMobileViewer" style="display: none; width: 100%; height: 100%; min-height: 300px; background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%); border-radius: 8px; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 32px;">
-              <svg style="width: 48px; height: 48px; margin-bottom: 16px; opacity: 0.6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" stroke="rgba(255,255,255,0.8)"/>
-                <line x1="8" y1="21" x2="16" y2="21" stroke="rgba(255,255,255,0.8)"/>
-                <line x1="12" y1="17" x2="12" y2="21" stroke="rgba(255,255,255,0.8)"/>
+            <div id="gsplatMobileViewer"
+              style="display: none; width: 100%; height: 100%; min-height: 300px; background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%); border-radius: 8px; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 32px;">
+              <svg style="width: 48px; height: 48px; margin-bottom: 16px; opacity: 0.6;" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" stroke="rgba(255,255,255,0.8)" />
+                <line x1="8" y1="21" x2="16" y2="21" stroke="rgba(255,255,255,0.8)" />
+                <line x1="12" y1="17" x2="12" y2="21" stroke="rgba(255,255,255,0.8)" />
               </svg>
-              <div style="color: #fff; font-size: 16px; font-weight: 500; margin-bottom: 8px;">Gaussian Splat Viewer</div>
-              <div style="color: rgba(255,255,255,0.6); font-size: 14px;">Not supported on mobile.<br>Please visit on desktop for the interactive 3D viewer.</div>
+              <div style="color: #fff; font-size: 16px; font-weight: 500; margin-bottom: 8px;">Gaussian Splat Viewer
+              </div>
+              <div style="color: rgba(255,255,255,0.6); font-size: 14px;">Not supported on mobile.<br>Please visit on
+                desktop for the interactive 3D viewer.</div>
             </div>
           </div>
         </div>
@@ -467,9 +474,16 @@
             </svg>
           </div>
           <h3>PolaRiS Hub</h3>
-          <p>Upload your own reconstructed environments to the PolaRiS Hub and contribute to the growing collection of
-            evaluation scenes.</p>
-          <span class="resource-coming-soon">Coming Soon</span>
+          <p>Download our evaluation environments or contribute your own. See the <a
+              href="https://github.com/arhanjain/polaris/blob/main/docs/custom_environments.md" target="_blank"
+              style="color: var(--honey-bronze); text-decoration: none; border-bottom: 1px dotted var(--honey-bronze);">contribution
+              guide</a> for more details.</p>
+          <a href="https://huggingface.co/datasets/owhan/PolaRiS-environments" target="_blank" class="resource-link">
+            Hugging Face
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M7 17L17 7M17 7H7M17 7V17" />
+            </svg>
+          </a>
         </div>
       </div>
     </div>
