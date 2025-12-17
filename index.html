@@ -1025,7 +1025,9 @@
           'H': 'circle',  // hexagon fallback
         };
 
-        data.forEach((d) => {
+        // Collect all points for animation
+        const scatterPoints = [];
+        data.forEach((d, index) => {
           const cx = scaleX(d.sim);
           const cy = scaleY(d.real);
           // Use color from data for PolaRiS, use blue for LIBERO
@@ -1100,6 +1102,11 @@
               fill: fillColor, 'fill-opacity': fillOpacity
             });
           }
+
+          // Add animation class with staggered delay for scatter effect
+          node.classList.add('scatter-point-animated');
+          node.style.animationDelay = `${index * 15 + Math.random() * 50}ms`;
+          scatterPoints.push(node);
 
           node.style.cursor = 'pointer';
           node.addEventListener('mouseenter', (e) => {
@@ -1191,6 +1198,19 @@
             policyLegend.appendChild(item);
           });
         }
+
+        // Set up IntersectionObserver to trigger scatter animation on first view
+        const scatterObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              scatterPoints.forEach(point => {
+                point.classList.add('animate');
+              });
+              scatterObserver.disconnect();
+            }
+          });
+        }, { threshold: 0.2 });
+        scatterObserver.observe(svg);
       };
 
       fetch('./assets/data/main_correlation_data.json')
@@ -1255,6 +1275,9 @@
         if (!barSvg || !metrics) return;
 
         while (barSvg.firstChild) barSvg.removeChild(barSvg.firstChild);
+
+        // Collect bars for animation
+        const animatedBars = [];
 
         // Dimensions to match correlation scatter height
         const margin = { top: 20, right: 30, bottom: 50, left: 50 };
@@ -1384,6 +1407,11 @@
               fill: color,
               rx: 3
             });
+            // Add animation class with transform-origin based on value direction
+            bar.classList.add('bar-animated');
+            bar.style.transformOrigin = val >= 0 ? 'bottom center' : 'top center';
+            bar.style.animationDelay = `${(gi * benchmarks.length + bi) * 50}ms`;
+            animatedBars.push(bar);
             g.appendChild(bar);
 
             // Value label - position based on positive/negative
@@ -1398,9 +1426,27 @@
               'font-weight': '600'
             });
             valLabel.textContent = val.toFixed(2);
+            // Also animate value labels
+            valLabel.style.opacity = '0';
+            valLabel.classList.add('bar-label-animated');
+            valLabel.style.animationDelay = `${(gi * benchmarks.length + bi) * 50 + 300}ms`;
+            animatedBars.push(valLabel);
             g.appendChild(valLabel);
           });
         });
+
+        // Set up IntersectionObserver to trigger bar animation on first view
+        const barObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              animatedBars.forEach(el => {
+                el.classList.add('animate');
+              });
+              barObserver.disconnect();
+            }
+          });
+        }, { threshold: 0.2 });
+        barObserver.observe(barSvg);
 
         // Update benchmark legend (italic = shown in correlation plot)
         if (benchmarkLegend) {
@@ -1437,6 +1483,9 @@
 
       const renderCotrainBar = (metrics) => {
         while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+        // Collect bars for animation
+        const animatedBars = [];
 
         const margin = { top: 20, right: 20, bottom: 70, left: 50 };
         const w = 400 - margin.left - margin.right;
@@ -1497,6 +1546,10 @@
               fill: cond.color,
               rx: 4
             });
+            // Add animation class
+            bar.classList.add('bar-animated');
+            bar.style.animationDelay = `${(gi * conditions.length + ci) * 80}ms`;
+            animatedBars.push(bar);
             g.appendChild(bar);
 
             // Value label
@@ -1509,6 +1562,11 @@
               'font-weight': '600'
             });
             valLabel.textContent = val.toFixed(2);
+            // Also animate value labels
+            valLabel.style.opacity = '0';
+            valLabel.classList.add('bar-label-animated');
+            valLabel.style.animationDelay = `${(gi * conditions.length + ci) * 80 + 300}ms`;
+            animatedBars.push(valLabel);
             g.appendChild(valLabel);
           });
         });
@@ -1528,6 +1586,19 @@
           legendLabel.textContent = cond.label;
           g.appendChild(legendLabel);
         });
+
+        // Set up IntersectionObserver to trigger bar animation on first view
+        const cotrainObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              animatedBars.forEach(el => {
+                el.classList.add('animate');
+              });
+              cotrainObserver.disconnect();
+            }
+          });
+        }, { threshold: 0.2 });
+        cotrainObserver.observe(svg);
       };
 
       fetch('./assets/data/data_mix_metrics.json')
@@ -1578,8 +1649,12 @@
       let allData = [];
       let tooltip = null;
 
+      let barPlotHasAnimated = false;
       const renderBars = (records, filterEnv = 'all') => {
         while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+        // Collect bars for animation
+        const animatedBars = [];
 
         // Filter by environment if needed
         let filtered = records.filter(r => r.source === 'polaris');
@@ -1661,6 +1736,11 @@
           });
 
           [simRect, realRect].forEach((node, i) => {
+            // Add animation class
+            node.classList.add('bar-animated');
+            node.style.animationDelay = `${(idx * 2 + i) * 60}ms`;
+            animatedBars.push(node);
+
             node.style.cursor = 'pointer';
             node.addEventListener('mouseenter', (e) => {
               tooltip.style.opacity = '1';
@@ -1716,6 +1796,23 @@
         g.appendChild(simLabel);
         g.appendChild(realLegend);
         g.appendChild(realLabel);
+
+        // Set up animation - if filter changed (already seen), animate immediately
+        if (barPlotHasAnimated) {
+          animatedBars.forEach(el => el.classList.add('animate'));
+        } else {
+          // First time: use IntersectionObserver
+          const barPlotObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                animatedBars.forEach(el => el.classList.add('animate'));
+                barPlotHasAnimated = true;
+                barPlotObserver.disconnect();
+              }
+            });
+          }, { threshold: 0.2 });
+          barPlotObserver.observe(svg);
+        }
 
         if (statusEl) statusEl.textContent = '';
       };
