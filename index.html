@@ -282,6 +282,14 @@
           <div class="reconstruction-half-header">
             <div class="reconstruction-half-title">Gaussian Splat Viewer <span id="gsplatViewerHint">(Drag and Scroll to
                 rotate and zoom)</span></div>
+            <label class="mesh-selector">
+              <span>Select scene</span>
+              <select id="gsplatSelect">
+                <option value="workbench" selected>Workbench</option>
+                <option value="splat_stove">Stove</option>
+                <option value="splat_lobbydesk">Lobby Desk</option>
+              </select>
+            </label>
           </div>
           <div class="gsplat-viewer-container">
             <!-- Desktop: Interactive WebGL viewer -->
@@ -292,7 +300,7 @@
                   <div class="gsplat-progress-fill" id="gsplatIframeProgress"></div>
                 </div>
               </div>
-              <iframe id="gsplatIframe" data-gzsrc="./assets/splats/workbench.html.gz"
+              <iframe id="gsplatIframe"
                 style="width: 100%; height: 100%; min-height: 500px; border: none;" allowfullscreen>
               </iframe>
             </div>
@@ -645,8 +653,8 @@
         ('ontouchstart' in window && navigator.maxTouchPoints > 2);
     }
 
-    // Gaussian Splat iframe - fetch gzipped file, decompress, patch, and load
-    document.addEventListener('DOMContentLoaded', async () => {
+    // Gaussian Splat iframe - lazy loading with scene switcher
+    document.addEventListener('DOMContentLoaded', () => {
       const iframe = document.getElementById('gsplatIframe');
       const loading = document.getElementById('gsplatIframeLoading');
       const progress = document.getElementById('gsplatIframeProgress');
@@ -654,6 +662,19 @@
       const desktopViewer = document.getElementById('gsplatDesktopViewer');
       const mobileViewer = document.getElementById('gsplatMobileViewer');
       const viewerHint = document.getElementById('gsplatViewerHint');
+      const select = document.getElementById('gsplatSelect');
+
+      // Scene configurations
+      const scenes = {
+        workbench: { label: 'Workbench', file: './assets/splats/workbench.html.gz' },
+        splat_stove: { label: 'Stove', file: './assets/splats/splat_stove.html.gz' },
+        splat_lobbydesk: { label: 'Lobby Desk', file: './assets/splats/splat_lobbydesk.html.gz' }
+      };
+
+      // Track current blob URL for cleanup
+      let currentBlobUrl = null;
+      let isLoading = false;
+      let currentSceneKey = null;
 
       // Mobile fallback: show unsupported message instead of WebGL viewer
       if (isMobileDevice()) {
@@ -663,66 +684,91 @@
         return; // Skip loading the heavy WebGL viewer
       }
 
-      if (!iframe || !loading) return;
+      if (!iframe || !loading || !select) return;
 
-      const gzSrc = iframe.dataset.gzsrc;
-      if (!gzSrc) {
-        // Fallback to regular loading if no gzsrc
-        iframe.addEventListener('load', () => loading.classList.add('hidden'));
-        return;
-      }
+      // Cleanup function to free resources
+      const cleanup = () => {
+        // Clear onload handler to prevent it firing during cleanup
+        iframe.onload = null;
+        // Revoke previous blob URL to free memory
+        if (currentBlobUrl) {
+          URL.revokeObjectURL(currentBlobUrl);
+          currentBlobUrl = null;
+        }
+        // Clear iframe to release WebGL context and memory
+        iframe.src = 'about:blank';
+      };
 
-      try {
+      // Load a specific scene
+      const loadScene = async (sceneKey) => {
+        const scene = scenes[sceneKey];
+        if (!scene || isLoading) return;
+
+        isLoading = true;
+        select.disabled = true;
+        currentSceneKey = sceneKey;
+
+        // Show loading state in dropdown
+        const originalText = select.options[select.selectedIndex].text;
+        select.options[select.selectedIndex].text = 'Loading...';
+
+        // Cleanup previous scene
+        cleanup();
+
+        // Show loading
+        loading.classList.remove('hidden');
+        progress.style.width = '0%';
         loadingText.textContent = 'Downloading viewer...';
-        const response = await fetch(gzSrc);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-        const contentLength = response.headers.get('content-length');
-        const total = contentLength ? parseInt(contentLength, 10) : 0;
-        let loaded = 0;
+        try {
+          const response = await fetch(scene.file);
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-        const reader = response.body.getReader();
-        const chunks = [];
+          const contentLength = response.headers.get('content-length');
+          const total = contentLength ? parseInt(contentLength, 10) : 0;
+          let loaded = 0;
 
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          chunks.push(value);
-          loaded += value.length;
-          if (total > 0) {
-            const pct = Math.round((loaded / total) * 70);
-            progress.style.width = pct + '%';
-            loadingText.textContent = `Downloading... ${Math.round(loaded / 1024 / 1024)}MB`;
+          const reader = response.body.getReader();
+          const chunks = [];
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            chunks.push(value);
+            loaded += value.length;
+            if (total > 0) {
+              const pct = Math.round((loaded / total) * 70);
+              progress.style.width = pct + '%';
+              loadingText.textContent = `Downloading... ${Math.round(loaded / 1024 / 1024)}MB`;
+            }
           }
-        }
 
-        const compressedData = new Uint8Array(loaded);
-        let offset = 0;
-        for (const chunk of chunks) {
-          compressedData.set(chunk, offset);
-          offset += chunk.length;
-        }
+          const compressedData = new Uint8Array(loaded);
+          let offset = 0;
+          for (const chunk of chunks) {
+            compressedData.set(chunk, offset);
+            offset += chunk.length;
+          }
 
-        loadingText.textContent = 'Decompressing...';
-        progress.style.width = '75%';
+          loadingText.textContent = 'Decompressing...';
+          progress.style.width = '75%';
 
-        const ds = new DecompressionStream('gzip');
-        const decompressedStream = new Blob([compressedData]).stream().pipeThrough(ds);
-        const decompressedArrayBuffer = await new Response(decompressedStream).arrayBuffer();
+          const ds = new DecompressionStream('gzip');
+          const decompressedStream = new Blob([compressedData]).stream().pipeThrough(ds);
+          const decompressedArrayBuffer = await new Response(decompressedStream).arrayBuffer();
 
-        progress.style.width = '85%';
-        loadingText.textContent = 'Preparing viewer...';
+          progress.style.width = '85%';
+          loadingText.textContent = 'Preparing viewer...';
 
-        let htmlText = new TextDecoder().decode(decompressedArrayBuffer);
-        const realBaseUrl = new URL('./assets/splats/workbench.html', window.location.href).href;
+          let htmlText = new TextDecoder().decode(decompressedArrayBuffer);
+          const realBaseUrl = new URL(scene.file.replace('.gz', ''), window.location.href).href;
 
-        // Inject script to patch URL constructor for blob context
-        const patchScript = `<script>
+          // Inject script to patch URL constructor for blob context
+          const patchScript = `<script>
 (function() {
   const fakeHref = "${realBaseUrl}";
   const OrigURL = window.URL;
   window.URL = function(url, base) {
-    // Replace any blob: base URL with the real URL
     if (base !== undefined && typeof base === 'string' && base.startsWith('blob:')) {
       base = fakeHref;
     }
@@ -736,24 +782,46 @@
 })();
 <\/script>`;
 
-        htmlText = htmlText.replace('<head>', '<head>' + patchScript);
+          htmlText = htmlText.replace('<head>', '<head>' + patchScript);
 
-        progress.style.width = '90%';
-        loadingText.textContent = 'Loading viewer...';
+          progress.style.width = '90%';
+          loadingText.textContent = 'Loading viewer...';
 
-        const htmlBlob = new Blob([htmlText], { type: 'text/html' });
-        const blobUrl = URL.createObjectURL(htmlBlob);
+          const htmlBlob = new Blob([htmlText], { type: 'text/html' });
+          currentBlobUrl = URL.createObjectURL(htmlBlob);
 
-        iframe.onload = () => {
-          progress.style.width = '100%';
-          setTimeout(() => loading.classList.add('hidden'), 300);
-        };
-        iframe.src = blobUrl;
+          iframe.onload = () => {
+            progress.style.width = '100%';
+            setTimeout(() => {
+              loading.classList.add('hidden');
+              isLoading = false;
+              select.disabled = false;
+              // Restore original text
+              select.options[select.selectedIndex].text = scene.label;
+            }, 300);
+          };
+          iframe.src = currentBlobUrl;
 
-      } catch (err) {
-        console.error('Failed to load splat viewer:', err);
-        loadingText.textContent = 'Error: ' + err.message;
-      }
+        } catch (err) {
+          console.error('Failed to load splat viewer:', err);
+          loadingText.textContent = 'Error: ' + err.message;
+          isLoading = false;
+          select.disabled = false;
+          // Restore original text
+          select.options[select.selectedIndex].text = scene.label;
+        }
+      };
+
+      // Handle scene selection
+      select.addEventListener('change', (e) => {
+        const sceneKey = e.target.value;
+        if (sceneKey) {
+          loadScene(sceneKey);
+        }
+      });
+
+      // Load default scene (workbench)
+      loadScene('workbench');
     });
 
     // TRELLIS mesh switcher

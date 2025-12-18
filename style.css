@@ -1849,8 +1849,14 @@ a#figure-3-img img {
   transition: all 0.25s ease;
 }
 
-.mesh-selector select:hover {
+.mesh-selector select:hover:not(:disabled) {
   border-color: var(--border-light);
+}
+
+.mesh-selector select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--bg-primary);
 }
 
 .mesh-selector-row {
