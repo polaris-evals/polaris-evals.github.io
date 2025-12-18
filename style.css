@@ -2474,14 +2474,13 @@ video.r2s-video-item {
 }
 
 .bibtex-code pre {
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
+  white-space: pre;
+  overflow-x: auto;
   margin: 0;
 }
 
 .bibtex-code code {
   font-family: 'Fira Code', monospace;
-  overflow-wrap: break-word;
   font-size: 12px;
   line-height: 1.7;
 }
